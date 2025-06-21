@@ -52,27 +52,27 @@ Acessar Back-end
 
 ---
 
-📦 raiz-do-projeto
-├── frontend/        → Interface com Next.js
-├── backend/         → API em Laravel
-├── docker/
-├── docker-compose.yml
-├── README.md
+📦 raiz-do-projeto <br>
+├── frontend/        → Interface com Next.js <br>
+├── backend/         → API em Laravel <br>
+├── docker/ <br>
+├── docker-compose.yml <br>
+├── README.md <br>
 └── .env
 
 ---
 
 🧠 Funcionalidades
-✅ Sistema de Login
-✅ Anotações com Markdown com o Tiptap
-✅ Organização por pastas/subpastas
-✅ Planejamento semanal com arrastar e soltar
-✅ Calendário de compromissos
-✅ Modo offline
-✅ Notas com cálculo automático de média
-✅ Provas com alertas e resumo por IA
-✅ Busca global inteligente
-✅ Design responsivo e otimizado
+- ✅ Sistema de Login
+- ✅ Anotações com Markdown com o Tiptap
+- ✅ Organização por pastas/subpastas
+- ✅ Planejamento semanal com arrastar e soltar
+- ✅ Calendário de compromissos
+- ✅ Modo offline
+- ✅ Notas com cálculo automático de média
+- ✅ Provas com alertas e resumo por IA
+- ✅ Busca global inteligente
+- ✅ Design responsivo e otimizado
 
 ---
 
