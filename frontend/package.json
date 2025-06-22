@@ -10,12 +10,6 @@
     "prepare": "husky",
     "test": "jest"
   },
-  "lint-staged": {
-    "*.{js,ts,jsx,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
-  },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.2",
     "@tanstack/react-query": "^5.80.7",
