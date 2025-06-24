@@ -42,7 +42,7 @@ const MobileMenu = () => {
 
       <Link href="/materias">
         <BookCheckIcon
-          className={`${activeSection == "exams" && "text-white"} size-9`}
+          className={`${activeSection == "materias" && "text-white"} size-9`}
           strokeWidth={1.5}
         />
       </Link>
