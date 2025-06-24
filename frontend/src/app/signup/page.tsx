@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -11,7 +11,6 @@ export default function SignUpPage() {
     password: "",
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +26,7 @@ export default function SignUpPage() {
     });
 
     if (!res.ok) throw new Error("Erro ao criar conta");
+    if (!res.ok) setError("Erro ao registrar conta");
 
     // Redireciona para login após cadastro
     router.push("/login");
