@@ -1,18 +1,16 @@
 "use client";
 
+import MobileMenu from "@/components/layout/navMenu/MobileMenu";
 import { useTrackRoute } from "@/hooks/useTrackRoute";
-import useWindowSize from "@/hooks/useWindowSize";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 import DesktopMenu from "./DesktopMenu";
-import MobileMenu from "./MobileMenu";
 
 const NavBar = () => {
-  const [width] = useWindowSize();
-  const isDesktop = width >= 1024;
-
+  const isDesktop: "mobile" | "desktop" = useWindowSize();
   useTrackRoute();
 
-  return <>{isDesktop ? <DesktopMenu /> : <MobileMenu />}</>;
+  return <>{isDesktop == "desktop" ? <DesktopMenu /> : <MobileMenu />}</>;
 };
 
 export default NavBar;

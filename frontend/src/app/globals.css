@@ -8,7 +8,7 @@
     --background: #1b1b1b;
     --foreground: #151515;
     --font: #666666;
-    --second: #49494933;
+    --second: #212121;
     --red: #d60000;
     --tag-red: #532323;
     --tag-orange: #533723;
@@ -17,6 +17,6 @@
 
 
 body {
-    background-color: var(--background);
+    background-color: var(--foreground);
     color: var(--font);
 }

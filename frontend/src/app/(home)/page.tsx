@@ -1,7 +1,5 @@
 "use client";
 
-const Home = () => {
+export default function HomePage() {
   return <div>Inicio</div>;
-};
-
-export default Home;
+}

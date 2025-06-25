@@ -1,5 +1,11 @@
+"use client";
+
 const AnnotationsPage = () => {
-  return <>Annotations</>;
+  return (
+    <>
+      <p>Annotation</p>
+    </>
+  );
 };
 
 export default AnnotationsPage;

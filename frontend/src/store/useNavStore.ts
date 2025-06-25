@@ -6,6 +6,6 @@ interface NavStore {
 }
 
 export const useNavStore = create<NavStore>((set) => ({
-  activeSection: "dashboard",
+  activeSection: "",
   setActiveSection: (section: string) => set({ activeSection: section }),
 }));
