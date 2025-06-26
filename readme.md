@@ -78,3 +78,7 @@ Acessar Back-end
 
 🤝 Contribuindo
 Sinta-se livre para abrir issues, pull requests ou sugestões. Toda ajuda é bem-vinda!
+
+**Rotas Laravel**
+- Para registrar: /register
+- Para login: /login
