@@ -30,6 +30,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.18.1",
+    "immer": "^10.1.1",
     "jest": "^30.0.0",
     "lucide-react": "^0.516.0",
     "next": "15.3.3",

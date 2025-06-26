@@ -25,20 +25,35 @@ const FolderNode = ({
   onSelect,
   currentPath = "",
 }: FolderNodeProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
-  const hasChildren = !!item.children?.length;
+  const [isOpen, setIsOpen] = useState(true);
 
+  const hasChildren = !!item.children?.length;
   const fullPath = currentPath ? `${currentPath}/${item.id}` : item.id;
+
   const isSelected = selectedPath === fullPath;
-  const isInPath = selectedPath.startsWith(fullPath);
+  const isChildSelected = selectedPath.startsWith(`${fullPath}/`);
+  const Icon = {
+    folder: FolderIcon,
+    note: FileIcon,
+    kanban: KanbanSquareIcon,
+  }[item.type];
 
   const handleClick = () => {
     if (item.type === "folder") {
-      setIsOpen(!isOpen);
+      setIsOpen((prev) => !prev);
     } else {
       onSelect?.(fullPath);
     }
   };
+
+  const showChevron =
+    item.type === "folder" ? (
+      isOpen ? (
+        <ChevronDownIcon />
+      ) : (
+        <ChevronUpIcon />
+      )
+    ) : null;
 
   return (
     <div className="flex flex-col">
@@ -46,32 +61,19 @@ const FolderNode = ({
         onClick={handleClick}
         variant="folder"
         size="folder"
-        className={`relative flex items-center gap-[6px] text-md cursor-pointer
+        className={`relative gap-[6px] text-md cursor-pointer z-1
           ${!isRoot ? "pl-4" : ""}
           ${
             !isRoot
-              ? `before:absolute before:top-1/2 before:-left-4 before:w-4 before:border-t 
-              ${isInPath ? "before:border-white" : "before:border-neutral-700"}`
+              ? `before:absolute before:top-1/2 before:-left-4 before:w-4 before:border-t before:-z-1 
+                 ${isSelected ? "before:border-white" : "before:border-neutral-700"}`
               : ""
           }
-          ${isSelected && "text-white font-semibold"}
+          ${isSelected ? "text-white font-semibold" : ""}
         `}
       >
-        {item.type === "folder" ? (
-          <div className="flex gap-2 items-center">
-            {isOpen ? (
-              <ChevronDownIcon className="size-4" />
-            ) : (
-              <ChevronUpIcon className="size-4" />
-            )}
-            <FolderIcon className="size-5" />
-          </div>
-        ) : item.type === "note" ? (
-          <FileIcon className="size-5" />
-        ) : (
-          <KanbanSquareIcon className="size-5" />
-        )}
-
+        {showChevron}
+        <Icon className="size-4" />
         <p className="truncate">{item.name}</p>
       </Button>
 
@@ -80,7 +82,8 @@ const FolderNode = ({
           className={`ml-2 pl-2 relative overflow-hidden transition-all duration-300
             ${isOpen ? "max-h-[1000px]" : "max-h-0"}
             before:absolute before:left-0 before:top-0 before:bottom-[18px] before:w-px
-            ${isInPath ? "before:bg-white" : "before:bg-neutral-700"}
+            ${!isRoot && isChildSelected ? "before:bg-white" : "before:bg-neutral-700"}
+            
           `}
         >
           {isOpen &&

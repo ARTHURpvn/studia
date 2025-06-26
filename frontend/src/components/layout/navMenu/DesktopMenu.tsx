@@ -5,7 +5,7 @@ import {
   CircleUserRoundIcon,
   HelpCircleIcon,
 } from "lucide-react";
-import { use } from "react";
+import { useEffect, useState } from "react";
 
 import DesktopNavContainer from "@/components/layout/navMenu/components/DesktopNavContainer";
 import FolderTree from "@/components/layout/navMenu/components/FolderTree/FolderTree";
@@ -14,7 +14,16 @@ import { getRootFolders } from "@/lib/folder";
 import { FolderItem } from "@/store/useFoldersStore";
 
 const DesktopMenu = () => {
-  const folders: FolderItem[] = use(getRootFolders());
+  const [folders, setFolders] = useState<FolderItem[]>([]);
+
+  useEffect(() => {
+    const folder = async () => {
+      const folders: FolderItem[] = await getRootFolders();
+      setFolders(folders);
+    };
+
+    folder();
+  }, []);
 
   return (
     <aside

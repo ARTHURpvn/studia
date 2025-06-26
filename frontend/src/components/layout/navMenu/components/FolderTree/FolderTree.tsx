@@ -1,35 +1,34 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { FolderItem } from "@/store/useFoldersStore";
+import { loadFoldersToStore } from "@/lib/folderData";
+import { FolderItem, useFoldersStore } from "@/store/useFoldersStore";
 
 import FolderNode from "./FolderNode";
 
-interface Props {
-  data: FolderItem[];
-}
-
-const FolderTree = ({ data }: Props) => {
+const FolderTree = () => {
+  const folders = useFoldersStore((s) => s.folders);
   const [selectedPath, setSelectedPath] = useState<string>("");
+
+  useEffect(() => {
+    if (folders.length === 0) {
+      loadFoldersToStore();
+    }
+  }, [folders.length]);
 
   return (
     <>
-      {data.map((item: FolderItem) => (
+      {folders.map((item: FolderItem) => (
         <FolderNode
           key={item.id}
           item={item}
           isRoot
           selectedPath={selectedPath}
           onSelect={setSelectedPath}
+          currentPath=""
         />
       ))}
-
-      <div className="flex w-full py-2 px-3 cursor-pointer hover:bg-[var(--second)] hover:text-white rounded-md  items-center gap-3 mt-4">
-        <PlusIcon />
-        <p>Criar Pasta</p>
-      </div>
     </>
   );
 };

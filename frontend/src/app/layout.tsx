@@ -16,9 +16,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log(children);
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body>
         <nav className={"fixed top-4 left-10 w-full"}>
           <PathHeader />
