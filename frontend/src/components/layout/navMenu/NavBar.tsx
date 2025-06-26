@@ -8,6 +8,7 @@ import DesktopMenu from "./DesktopMenu";
 
 const NavBar = () => {
   const isDesktop: "mobile" | "desktop" = useWindowSize();
+
   useTrackRoute();
 
   return <>{isDesktop == "desktop" ? <DesktopMenu /> : <MobileMenu />}</>;

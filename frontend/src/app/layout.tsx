@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import React from "react";
 
 import NavBar from "@/components/layout/navMenu/NavBar";
+import PathHeader from "@/components/layout/pathHeader/PathHeader";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,9 +16,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log(children);
   return (
     <html lang="en">
       <body>
+        <nav className={"fixed top-4 left-10 w-full"}>
+          <PathHeader />
+        </nav>
         <div className={"flex items-center justify-center"}>
           <NavBar />
           <main>{children}</main>

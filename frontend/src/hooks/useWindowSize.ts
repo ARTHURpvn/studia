@@ -3,18 +3,27 @@
 import { useEffect, useState } from "react";
 
 export function useWindowSize(): "mobile" | "desktop" {
-  const [isMobile, setIsMobile] = useState(false);
+  const [width, setWidth] = useState<number | null>(
+    typeof window !== "undefined" ? window.innerWidth : null,
+  );
 
   useEffect(() => {
-    const checkDevice = () => {
-      setIsMobile(window.innerWidth <= 768);
+    if (typeof window === "undefined") return;
+
+    let timeoutId: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWidth(window.innerWidth);
+      }, 150); // debounce
     };
 
-    checkDevice();
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Inicializa
 
-    window.addEventListener("resize", checkDevice);
-    return () => window.removeEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return isMobile ? "mobile" : "desktop";
+  if (width === null) return "desktop";
+  return width <= 768 ? "mobile" : "desktop";
 }

@@ -19,14 +19,15 @@ const buttonVariants = cva(
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
-        folder: "justify-start pl-4 hover:bg-[var(--second)] hover:text-white",
+        folder:
+          "bg-[var(--second)] justify-end pb-3 lg:justify-start lg:pl-4 lg:hover:bg-[var(--second)] lg:hover:text-white",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
         icon: "size-9",
-        folder: "w-full h-9",
+        folder: "lg:w-full lg:h-9 w-30 h-27",
       },
     },
     defaultVariants: {
