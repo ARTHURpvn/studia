@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useNavStore } from "@/store/useNavStore";
 
 const MobileMenu = () => {
-  const activeSection = useNavStore((s) => s.activeSection);
+  const activeSection: string = useNavStore((s) => s.activeSection);
 
   return (
     <div className="flex w-full h-19 items-center px-10 justify-between absolute bottom-0 left-0">

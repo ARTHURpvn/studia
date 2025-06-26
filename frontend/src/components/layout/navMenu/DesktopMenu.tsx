@@ -1,43 +1,46 @@
 "use client";
 
 import {
-  BookCheckIcon,
-  CalendarIcon,
+  Calendar1Icon,
   CircleUserRoundIcon,
-  HouseIcon,
-  SearchIcon,
+  HelpCircleIcon,
 } from "lucide-react";
 
+import DesktopNavContainer from "@/components/layout/navMenu/components/DesktopNavContainer";
+import FolderTree from "@/components/layout/navMenu/components/FolderTree/FolderTree";
+import NavButton from "@/components/layout/navMenu/components/NavButton";
+import { useFoldersStore } from "@/store/useFoldersStore";
+
 const DesktopMenu = () => {
+  const { folders } = useFoldersStore();
+
   return (
-    <aside className="w-70 h-[100dvh] bg-[var(--background)] border-r">
-      <div className="flex text-white items-center gap-6 p-4">
+    <aside
+      className={
+        "w-70 h-full absolute left-0  top-0 bg-[var(--background)] border-r"
+      }
+    >
+      <div className={"flex text-white items-center gap-6 p-4"}>
         <CircleUserRoundIcon className="size-9" strokeWidth={1.2} />
         <p className={"text-2xl font-bold"}>Arthur Pavan</p>
       </div>
 
-      <div className="flex flex-col gap-4 mx-12 mt-4">
-        <div className="flex items-center gap-5">
-          <SearchIcon className="size-7" strokeWidth={1} />
-          <p className={"text-xl"}> Buscar </p>
-        </div>
-        <div className="flex items-center gap-5">
-          <HouseIcon className="size-7" strokeWidth={1} />
-          <p className={"text-xl"}> Página Inicial </p>
-        </div>
-        <div className="flex items-center gap-5">
-          <CalendarIcon className="size-7" strokeWidth={1} />
-          <p className={"text-xl"}> Calendario </p>
-        </div>
-        <div className="flex items-center gap-5">
-          <BookCheckIcon className="size-7" strokeWidth={1} />
-          <p className={"text-xl"}> Matérias </p>
+      <DesktopNavContainer />
+
+      <div className={"flex flex-col gap-3 mx-6 mt-8 pb-12 border-b"}>
+        <p className={"font-bold"}>Pastas</p>
+        <div>
+          <FolderTree data={folders} />
         </div>
       </div>
 
-      <div className={"flex flex-col gap-3 mx-6 mt-8"}>
-        <p className={"font-bold"}>Pastas</p>
-        <div></div>
+      <nav className={"mx-6"}>
+        <NavButton name={"Configuração"} />
+      </nav>
+
+      <div className={"absolute bottom-3 flex w-full justify-between px-6"}>
+        <Calendar1Icon strokeWidth={1.5} />
+        <HelpCircleIcon strokeWidth={1.5} />
       </div>
     </aside>
   );
