@@ -30,7 +30,10 @@ export const signupUserByEmail = async ({
   }
 };
 
-export const loginUserByEmail = async ({ email, password }: userProps) => {
+export const loginUserByEmail = async ({
+  email,
+  password,
+}: Omit<userProps, "name">) => {
   try {
     return await axios
       .post(

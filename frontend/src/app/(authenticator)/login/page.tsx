@@ -1,7 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -17,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { loginUserByEmail } from "@/lib/auth";
 
 const passwordSchema = z
   .string()
@@ -27,9 +30,10 @@ const passwordSchema = z
   .regex(/[@$!%*?#&]/, "A senha deve conter pelo menos um caractere especial.");
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const FormSchema = z.object({
     email: z.string().email("Email inválido"),
-
     password: passwordSchema,
   });
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -40,14 +44,24 @@ export default function LoginPage() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast("You submitted the following values", {
-      description: (
-        <pre className="mt-2 w-[320px] rounded-md bg-neutral-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      await loginUserByEmail({
+        email: data.email,
+        password: data.password,
+      });
+
+      toast.success("Conta criada com sucesso!");
+      router.push("/login");
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
+      const errorMsg: string =
+        error.response?.data?.message ||
+        error.message ||
+        "Erro desconhecido ao criar conta.";
+
+      toast.error("Erro ao criar conta: " + errorMsg);
+    }
   }
 
   return (
