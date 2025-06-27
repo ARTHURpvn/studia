@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import React from "react";
+import { Toaster } from "sonner";
 
 import NavBar from "@/components/layout/navMenu/NavBar";
 import PathHeader from "@/components/layout/pathHeader/PathHeader";
@@ -26,6 +27,7 @@ export default function RootLayout({
           <NavBar />
           <main>{children}</main>
         </div>
+        <Toaster />
       </body>
     </html>
   );
