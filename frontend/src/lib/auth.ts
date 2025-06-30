@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import { userProps } from "@/store/useAuthStore";
 
 export const signupUserByEmail = async ({
@@ -8,8 +7,9 @@ export const signupUserByEmail = async ({
   password,
 }: userProps) => {
   try {
-    await axios.post(
-      "http://localhost:8000/register",
+    // A requisição em si está correta
+    const response = await axios.post(
+      "http://localhost:8000/api/register",
       {
         name,
         email,
@@ -19,14 +19,16 @@ export const signupUserByEmail = async ({
         headers: {
           "Content-Type": "application/json",
         },
-      },
+      }
     );
+    return response.data; // É bom retornar os dados em caso de sucesso
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       console.error("Erro Axios:", err.response?.data || err.message);
     } else {
       console.error("Erro desconhecido:", (err as Error).message);
     }
+    throw err; // CORREÇÃO: Re-lança o erro para o formulário poder capturá-lo
   }
 };
 
@@ -35,25 +37,25 @@ export const loginUserByEmail = async ({
   password,
 }: Omit<userProps, "name">) => {
   try {
-    return await axios
-      .post(
-        "http://localhost:8000/login",
-        {
-          email,
-          password,
+    const response = await axios.post(
+      "http://localhost:8000/api/login", // CORREÇÃO: Adicionado o /api
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      )
-      .then((res) => res.data);
+      }
+    );
+    return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       console.error("Erro Axios:", err.response?.data || err.message);
     } else {
       console.error("Erro desconhecido:", (err as Error).message);
     }
+    throw err; // CORREÇÃO: Re-lança o erro para o formulário poder capturá-lo
   }
 };

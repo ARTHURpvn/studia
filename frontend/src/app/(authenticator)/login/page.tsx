@@ -46,21 +46,33 @@ export default function LoginPage() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      await loginUserByEmail({
+      // 1. Chame a função de login E capture a resposta dela
+      const responseData = await loginUserByEmail({
         email: data.email,
         password: data.password,
       });
 
-      toast.success("Conta criada com sucesso!");
-      router.push("/login");
+      // 2. Verifique se a resposta contém o token de acesso
+      if (responseData && responseData.access_token) {
+        // 3. Mostre a mensagem de sucesso CORRETA
+        toast.success("Login realizado com sucesso!");
+
+        // 4. Salve o token no navegador para manter o usuário logado
+        localStorage.setItem('accessToken', responseData.access_token);
+
+        // 5. Redirecione o usuário para a página principal (dashboard)
+        router.push("/"); // ou '/home', etc.
+
+      } else {
+        // Caso a resposta do servidor não venha como o esperado
+        toast.error("Não foi possível obter o token de acesso.");
+      }
+
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
-      const errorMsg: string =
-        error.response?.data?.message ||
-        error.message ||
-        "Erro desconhecido ao criar conta.";
-
-      toast.error("Erro ao criar conta: " + errorMsg);
+      // 6. Mensagem de erro CORRETA
+      const errorMsg = error.response?.data?.message || "Credenciais inválidas ou erro no servidor.";
+      toast.error(errorMsg);
     }
   }
 

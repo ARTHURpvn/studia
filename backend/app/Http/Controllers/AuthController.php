@@ -21,7 +21,9 @@ class AuthController extends Controller
         ])->post(env('SUPABASE_URL') . '/auth/v1/signup', [
             'email' => $request->email,
             'password' => $request->password,
-            'name' => $request->name,
+            'data' => [
+                'name' => $request->name
+            ]
         ]);
 
         return response()->json($response->json(), $response->status());
