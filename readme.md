@@ -80,5 +80,8 @@ Acessar Back-end
 Sinta-se livre para abrir issues, pull requests ou sugestões. Toda ajuda é bem-vinda!
 
 **Rotas Laravel**
-- Para registrar: /register
-- Para login: /login
+- Para registrar: /api/register precisa de nome, email e senha
+- Para login: /api/login precisa de email e senha
+- Para acessar os dados após o login: /api/me
+
+
