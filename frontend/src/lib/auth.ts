@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { userProps } from "@/store/useAuthStore";
 
 export const signupUserByEmail = async ({
@@ -19,7 +20,7 @@ export const signupUserByEmail = async ({
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return response.data; // É bom retornar os dados em caso de sucesso
   } catch (err: unknown) {
@@ -47,7 +48,7 @@ export const loginUserByEmail = async ({
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return response.data;
   } catch (err: unknown) {

@@ -19,7 +19,7 @@ export function useWindowSize(): "mobile" | "desktop" {
     };
 
     window.addEventListener("resize", handleResize);
-    handleResize(); // Inicializa
+    handleResize();
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);

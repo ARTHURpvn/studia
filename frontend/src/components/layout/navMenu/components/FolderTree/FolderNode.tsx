@@ -1,13 +1,8 @@
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  FileIcon,
-  FolderIcon,
-  KanbanSquareIcon,
-} from "lucide-react";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import FolderButton from "@/components/layout/navMenu/components/FolderTree/components/FolderButton";
+import FolderChildren from "@/components/layout/navMenu/components/FolderTree/components/FolderChildren";
 import { FolderItem } from "@/store/useFoldersStore";
 
 interface FolderNodeProps {
@@ -32,11 +27,8 @@ const FolderNode = ({
 
   const isSelected = selectedPath === fullPath;
   const isChildSelected = selectedPath.startsWith(`${fullPath}/`);
-  const Icon = {
-    folder: FolderIcon,
-    note: FileIcon,
-    kanban: KanbanSquareIcon,
-  }[item.type];
+  const isRootSelected =
+    selectedPath.split("/").length === 2 && selectedPath.startsWith(item.id);
 
   const handleClick = () => {
     if (item.type === "folder") {
@@ -46,57 +38,40 @@ const FolderNode = ({
     }
   };
 
-  const showChevron =
-    item.type === "folder" ? (
-      isOpen ? (
-        <ChevronDownIcon />
-      ) : (
-        <ChevronUpIcon />
-      )
-    ) : null;
+  const chevronIcon = () => {
+    if (item.type !== "folder") return null;
+    return isOpen ? <ChevronDownIcon /> : <ChevronUpIcon />;
+  };
 
   return (
     <div className="flex flex-col">
-      <Button
+      <FolderButton
+        item={item}
+        isRoot={isRoot}
+        isSelected={isSelected}
         onClick={handleClick}
-        variant="folder"
-        size="folder"
-        className={`relative gap-[6px] text-md cursor-pointer z-1
-          ${!isRoot ? "pl-4" : ""}
-          ${
-            !isRoot
-              ? `before:absolute before:top-1/2 before:-left-4 before:w-4 before:border-t before:-z-1 
-                 ${isSelected ? "before:border-white" : "before:border-neutral-700"}`
-              : ""
-          }
-          ${isSelected ? "text-white font-semibold" : ""}
-        `}
-      >
-        {showChevron}
-        <Icon className="size-4" />
-        <p className="truncate">{item.name}</p>
-      </Button>
+        showChevron={chevronIcon()}
+      />
 
       {hasChildren && (
-        <div
-          className={`ml-2 pl-2 relative overflow-hidden transition-all duration-300
-            ${isOpen ? "max-h-[1000px]" : "max-h-0"}
-            before:absolute before:left-0 before:top-0 before:bottom-[18px] before:w-px
-            ${!isRoot && isChildSelected ? "before:bg-white" : "before:bg-neutral-700"}
-            
-          `}
+        <FolderChildren
+          isRoot={isRoot}
+          isRootSelected={isRootSelected}
+          isChildSelected={isChildSelected}
+          isOpen={isOpen}
         >
           {isOpen &&
             item.children!.map((child) => (
               <FolderNode
                 key={child.id}
                 item={child}
+                isRoot={false}
                 selectedPath={selectedPath}
                 onSelect={onSelect}
                 currentPath={fullPath}
               />
             ))}
-        </div>
+        </FolderChildren>
       )}
     </div>
   );

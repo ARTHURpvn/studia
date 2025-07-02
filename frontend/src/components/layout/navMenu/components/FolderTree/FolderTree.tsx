@@ -8,14 +8,12 @@ import { FolderItem, useFoldersStore } from "@/store/useFoldersStore";
 import FolderNode from "./FolderNode";
 
 const FolderTree = () => {
-  const folders = useFoldersStore((s) => s.folders);
-  const [selectedPath, setSelectedPath] = useState<string>("");
-
   useEffect(() => {
-    if (folders.length === 0) {
-      loadFoldersToStore();
-    }
-  }, [folders.length]);
+    loadFoldersToStore();
+  }, []);
+
+  const folders: FolderItem[] = useFoldersStore((s) => s.folders);
+  const [selectedPath, setSelectedPath] = useState<string>("");
 
   return (
     <>
@@ -26,7 +24,6 @@ const FolderTree = () => {
           isRoot
           selectedPath={selectedPath}
           onSelect={setSelectedPath}
-          currentPath=""
         />
       ))}
     </>

@@ -10,7 +10,25 @@ const foldersData: FolderItem[] = [
         id: "1-1",
         name: "subpasta",
         type: "folder",
-        children: [{ id: "1-1-1", name: "Anotacao", type: "note" }],
+        children: [
+          {
+            id: "1-1-1",
+            name: "subsubpasta",
+            type: "folder",
+            children: [
+              {
+                id: "1-1-1-1",
+                name: "Anotation",
+                type: "note",
+              },
+            ],
+          },
+          {
+            id: "1-1-2",
+            name: "Anotation",
+            type: "note",
+          },
+        ],
       },
       {
         id: "1-2",

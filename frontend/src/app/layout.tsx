@@ -19,14 +19,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body>
-        <nav className={"fixed top-4 left-10 w-full"}>
-          <PathHeader />
-        </nav>
-        <div className={"flex items-center justify-center"}>
-          <NavBar />
-          <main>{children}</main>
+      <body className="h-screen w-screen overflow-hidden flex flex-col">
+        <div className="flex flex-1 overflow-hidden">
+          <aside className="w-70 h-full">
+            <NavBar />
+          </aside>
+
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <nav className="w-full px-4 py-2">
+              <PathHeader />
+            </nav>
+
+            <main className="flex-1 overflow-auto flex w-full justify-center">
+              {children}
+            </main>
+          </div>
         </div>
+
         <Toaster />
       </body>
     </html>

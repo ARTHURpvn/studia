@@ -3,6 +3,5 @@ import { FolderItem, useFoldersStore } from "@/store/useFoldersStore";
 
 export async function loadFoldersToStore() {
   const folders: FolderItem[] = await getRootFolders();
-  const setFolders = useFoldersStore.getState().setFolders;
-  setFolders(folders);
+  useFoldersStore.getState().setFolders(folders);
 }

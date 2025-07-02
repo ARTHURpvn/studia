@@ -6,7 +6,6 @@ import {
   SearchIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { ReactNode } from "react";
 
 import { useNavStore } from "@/store/useNavStore";
 
@@ -23,29 +22,14 @@ interface NavButtonProps {
 
 const NavButton = ({ name, link }: NavButtonProps) => {
   const activeSection = useNavStore((s) => s.activeSection);
-  let icon: ReactNode;
 
-  switch (name) {
-    case "Buscar":
-      icon = <SearchIcon className="size-7" strokeWidth={1} />;
-      break;
-
-    case "Página Inicial":
-      icon = <HouseIcon className="size-7" strokeWidth={1} />;
-      break;
-
-    case "Calendário":
-      icon = <CalendarIcon className="size-7" strokeWidth={1} />;
-      break;
-
-    case "Matérias":
-      icon = <BookCheckIcon className="size-7" strokeWidth={1} />;
-      break;
-
-    case "Configuração":
-      icon = <CogIcon className={"size-7"} strokeWidth={1.5} />;
-      break;
-  }
+  const Icon = {
+    Buscar: SearchIcon,
+    "Página Inicial": HouseIcon,
+    Calendário: CalendarIcon,
+    Matérias: BookCheckIcon,
+    Configuração: CogIcon,
+  }[name];
 
   return (
     <Link
@@ -56,7 +40,7 @@ const NavButton = ({ name, link }: NavButtonProps) => {
         flex items-center gap-5
        `}
     >
-      {icon}
+      <Icon className="size-7" strokeWidth={1} />
       <p className={"text-xl"}> {name} </p>
     </Link>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import { use } from "react";
 
 import FolderTree from "@/app/(features)/folders/components/FolderTree";

@@ -1,5 +1,7 @@
-const nextConfig = {
-  devIndicator: false,
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
 };
 
 export default nextConfig;
