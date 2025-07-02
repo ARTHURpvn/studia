@@ -4,7 +4,7 @@
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, {
   DateClickArg,
-  EventDropArg,
+  EventDragStopArg,
 } from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -46,7 +46,7 @@ export default function CalendarApp() {
     }
   };
 
-  const handleEventDrop = (arg: EventDropArg) => {
+  const handleEventDrop = (arg: EventDragStopArg) => {
     const updatedEvents = events.map((event) =>
       event.id === arg.event.id
         ? {

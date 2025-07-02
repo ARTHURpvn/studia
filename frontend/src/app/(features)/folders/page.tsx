@@ -1,17 +1,13 @@
-"use client";
-
-import { use } from "react";
+// ❌ sem "use client" aqui
 
 import FolderTree from "@/app/(features)/folders/components/FolderTree";
 import { getRootFolders } from "@/lib/folder";
-import { useFoldersStore } from "@/store/useFoldersStore";
 
-const PastasPage = () => {
-  const folders = use(getRootFolders());
-  useFoldersStore((s) => s.setFolders(folders));
+const PastasPage = async () => {
+  const folders = await getRootFolders();
 
   return (
-    <div className="w-full min-h-screen  text-white">
+    <div className="w-full min-h-screen text-white">
       <FolderTree folders={folders} />
     </div>
   );

@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className="h-screen w-screen overflow-hidden flex flex-col">
         <div className="flex flex-1 overflow-hidden">
-          <aside className="w-70 h-full">
+          <aside className="lg:w-70 lg:h-full">
             <NavBar />
           </aside>
 

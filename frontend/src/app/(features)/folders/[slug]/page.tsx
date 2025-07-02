@@ -1,10 +1,16 @@
-import { use } from "react";
+// src/app/(features)/folders/[slug]/page.tsx
 
 import FolderTree from "@/app/(features)/folders/components/FolderTree";
 import { getFolderBySlug } from "@/lib/folder";
 
-const FolderSlugPage = ({ params }: { params: { slug: string } }) => {
-  const folder = use(getFolderBySlug(decodeURIComponent(params.slug)));
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+// AQUI: params é um objeto normal, passado pelo Next.js
+const FolderSlugPage = async ({ params }: PageProps) => {
+  const { slug } = await params;
+  const folder = await getFolderBySlug(decodeURIComponent(slug));
 
   return (
     <div className="w-full min-h-screen text-white">

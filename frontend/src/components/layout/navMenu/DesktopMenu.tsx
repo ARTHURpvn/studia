@@ -5,26 +5,12 @@ import {
   CircleUserRoundIcon,
   HelpCircleIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 
 import DesktopNavContainer from "@/components/layout/navMenu/components/DesktopNavContainer";
 import FolderTree from "@/components/layout/navMenu/components/FolderTree/FolderTree";
 import NavButton from "@/components/layout/navMenu/components/NavButton";
-import { getRootFolders } from "@/lib/folder";
-import { FolderItem } from "@/store/useFoldersStore";
 
 const DesktopMenu = () => {
-  const [folders, setFolders] = useState<FolderItem[]>([]);
-
-  useEffect(() => {
-    const folder = async () => {
-      const folders: FolderItem[] = await getRootFolders();
-      setFolders(folders);
-    };
-
-    folder();
-  }, []);
-
   return (
     <aside
       className={
@@ -41,7 +27,7 @@ const DesktopMenu = () => {
       <div className={"flex flex-col gap-3 mx-6 mt-8 pb-12 border-b"}>
         <p className={"font-bold"}>Pastas</p>
         <div>
-          <FolderTree data={folders} />
+          <FolderTree />
         </div>
       </div>
 
