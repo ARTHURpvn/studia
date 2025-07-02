@@ -74,3 +74,29 @@ body {
 .fc-day-today {
     background-color: #272727 !important;
 }
+
+@media only screen and (max-width: 600px) {
+    .fc .fc-toolbar-title {
+        font-size: 1.25rem;
+
+    }
+
+    .fc-header-toolbar {
+        position: relative;
+        align-items: end;
+        margin-top: 2rem;
+    }
+
+    .fc-toolbar-title {
+        position: absolute;
+        width: 100vw;
+        top: -45px;
+        left: 0;
+        text-align: center;
+    }
+
+    .fc-button, .fc-view * {
+        font-size: 0.8rem !important;
+    }
+
+}

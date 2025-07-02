@@ -21,16 +21,22 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className="h-screen w-screen overflow-hidden flex flex-col">
         <div className="flex flex-1 overflow-hidden">
-          <aside className="lg:w-70 lg:h-full">
-            <NavBar />
+          {/* Menu Desktop */}
+          <aside className="hidden lg:block w-70 h-full">
+            <NavBar /> {/* DesktopMenu será renderizado aqui */}
           </aside>
+
+          {/* Menu Mobile */}
+          <div className="block lg:hidden">
+            <NavBar /> {/* MobileMenu será renderizado aqui */}
+          </div>
 
           <div className="flex-1 flex flex-col overflow-hidden">
             <nav className="w-full px-4 py-2">
               <PathHeader />
             </nav>
 
-            <main className="flex-1 overflow-auto flex w-full justify-center">
+            <main className="flex-1 overflow-auto flex w-full justify-center max-lg:pb-34">
               {children}
             </main>
           </div>

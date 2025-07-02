@@ -15,7 +15,7 @@ const MobileMenu = () => {
   const activeSection: string = useNavStore((s) => s.activeSection);
 
   return (
-    <div className="flex w-full h-19 items-center px-10 justify-between absolute bottom-0 left-0">
+    <div className="flex w-full h-19 items-center px-10 bg-[var(--foreground)] z-100 justify-between absolute bottom-0 left-0">
       <Link href="/">
         <HouseIcon
           className={`${activeSection == "" && "text-white"} size-9`}

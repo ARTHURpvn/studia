@@ -174,7 +174,7 @@ export default function LoginPage() {
               </FormItem>
             )}
           />
-          <Button type="submit">Confirmar</Button>`
+          <Button type="submit">Confirmar</Button>
           <div className="flex self-center mt-4 gap-2">
             <p>Já possui uma conta?</p>
             <Link href="/login" className="text-white">

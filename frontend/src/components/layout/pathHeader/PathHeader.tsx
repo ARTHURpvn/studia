@@ -4,7 +4,6 @@ import Link from "next/link";
 
 import {
   Breadcrumb,
-  BreadcrumbEllipsis,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
@@ -24,11 +23,13 @@ const PathHeader = () => {
   const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
 
   let displayPath = path;
+  if (displayPath[0] == "") displayPath.shift();
 
   if (isMobile && path.length > 3) {
     displayPath = [path[0], path[path.length - 1]];
   }
 
+  console.log(displayPath);
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -41,19 +42,12 @@ const PathHeader = () => {
         {displayPath.map((item, index) => {
           const isLast = index === displayPath.length - 1;
 
-          if (item === "__ellipsis__") {
-            return (
-              <div key="ellipsis" className="flex items-center gap-1">
-                <BreadcrumbSeparator />
-                <BreadcrumbEllipsis />
-              </div>
-            );
-          }
-
-          const realIndex =
+          const realIndex: number =
             isMobile && path.length > 3 && index === 2
               ? path.length - 1
               : index;
+
+          console.log(index);
 
           return (
             <div key={index} className="flex items-center gap-1">
