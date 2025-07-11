@@ -1,6 +1,6 @@
 "use client";
 
-import { FolderItem } from "@/store/useFoldersStore";
+import { FolderItem } from "@/lib/features/types";
 
 import FolderNode from "./FolderNode";
 

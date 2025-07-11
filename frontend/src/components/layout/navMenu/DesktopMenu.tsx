@@ -4,11 +4,21 @@ import {
   Calendar1Icon,
   CircleUserRoundIcon,
   HelpCircleIcon,
+  PlusIcon,
 } from "lucide-react";
 
 import DesktopNavContainer from "@/components/layout/navMenu/components/DesktopNavContainer";
 import FolderTree from "@/components/layout/navMenu/components/FolderTree/FolderTree";
 import NavButton from "@/components/layout/navMenu/components/NavButton";
+import { DynamicForm } from "@/components/shared/DynamicForm";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const DesktopMenu = () => {
   return (
@@ -28,6 +38,7 @@ const DesktopMenu = () => {
         <p className={"font-bold"}>Pastas</p>
         <div>
           <FolderTree />
+          <DialogFolder />
         </div>
       </div>
 
@@ -40,6 +51,26 @@ const DesktopMenu = () => {
         <HelpCircleIcon strokeWidth={1.5} />
       </div>
     </aside>
+  );
+};
+
+const DialogFolder = () => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant={"folder"} size={"folder"} className={"text-md"}>
+          <PlusIcon /> Adicionar Pasta
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Criar uma Pasta</DialogTitle>
+        </DialogHeader>
+
+        <DynamicForm type={"folder"} />
+      </DialogContent>
+    </Dialog>
   );
 };
 

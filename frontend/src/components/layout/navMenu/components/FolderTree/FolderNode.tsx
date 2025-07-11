@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import FolderButton from "@/components/layout/navMenu/components/FolderTree/components/FolderButton";
 import FolderChildren from "@/components/layout/navMenu/components/FolderTree/components/FolderChildren";
-import { FolderItem } from "@/store/useFoldersStore";
+import { FolderItem } from "@/lib/features/types";
 
 interface FolderNodeProps {
   item: FolderItem;

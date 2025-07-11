@@ -1,8 +1,14 @@
-import { FileIcon, FolderIcon, KanbanSquareIcon } from "lucide-react";
+import {
+  EllipsisIcon,
+  FileIcon,
+  FolderIcon,
+  KanbanSquareIcon,
+} from "lucide-react";
 import React from "react";
 
+import FolderButtonAdd from "@/components/layout/navMenu/components/FolderTree/components/FolderButtonAdd";
 import { Button } from "@/components/ui/button";
-import { FolderItem } from "@/store/useFoldersStore";
+import { FolderItem } from "@/lib/features/types";
 
 interface FolderButtonProps {
   isRoot: boolean;
@@ -37,16 +43,34 @@ const FolderButton = ({
   const className = [base, padding, beforeLine, selectedStyle].join(" ");
 
   return (
-    <Button
-      onClick={onClick}
-      variant="folder"
-      size="folder"
-      className={className}
-    >
-      {showChevron}
-      <Icon className="size-4" />
-      <p className="truncate">{item.name}</p>
-    </Button>
+    <div className={"relative group"}>
+      <Button
+        onClick={onClick}
+        variant="folder"
+        size="folder"
+        className={className}
+      >
+        {showChevron}
+        <Icon className="size-4" />
+        <p className="truncate">{item.name}</p>
+      </Button>
+
+      {item.type === "folder" && (
+        <div
+          className={
+            "hidden group-hover:flex items-center gap-2 absolute right-2 top-[8px] z-100"
+          }
+        >
+          <div>
+            <EllipsisIcon />
+          </div>
+
+          <div>
+            <FolderButtonAdd parentId={item.id} />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

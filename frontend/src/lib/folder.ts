@@ -1,4 +1,4 @@
-import { FolderItem } from "@/store/useFoldersStore";
+import { FolderItem } from "@/lib/features/types";
 
 const foldersData: FolderItem[] = [
   {
@@ -13,7 +13,7 @@ const foldersData: FolderItem[] = [
         children: [
           {
             id: "1-1-1",
-            name: "subsubpasta",
+            name: "aaaaaaaaa",
             type: "folder",
             children: [
               {

@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 
+import { FolderItem } from "@/lib/features/types";
 import { loadFoldersToStore } from "@/lib/folderData";
-import { FolderItem, useFoldersStore } from "@/store/useFoldersStore";
+import { useFolderStore } from "@/store/features/folder/folderStore";
 
 import FolderNode from "./FolderNode";
 
@@ -12,7 +13,7 @@ const FolderTree = () => {
     loadFoldersToStore();
   }, []);
 
-  const folders: FolderItem[] = useFoldersStore((s) => s.folders);
+  const folders: FolderItem[] = useFolderStore((s) => s.folders);
   const [selectedPath, setSelectedPath] = useState<string>("");
 
   return (

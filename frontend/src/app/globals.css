@@ -99,4 +99,13 @@ body {
         font-size: 0.8rem !important;
     }
 
+    .fc-daygrid-day-top {
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .fc-day {
+        text-transform: capitalize;
+    }
+
 }

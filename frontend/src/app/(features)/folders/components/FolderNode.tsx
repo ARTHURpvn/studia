@@ -4,7 +4,7 @@ import { FileIcon, FolderIcon, KanbanSquareIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { FolderItem } from "@/store/useFoldersStore";
+import { FolderItem } from "@/lib/features/types";
 
 const FolderNode = ({ item }: { item: FolderItem }) => {
   const router = useRouter();

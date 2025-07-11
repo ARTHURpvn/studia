@@ -1,7 +1,9 @@
+import { FolderItem } from "@/lib/features/types";
 import { getRootFolders } from "@/lib/folder";
-import { FolderItem, useFoldersStore } from "@/store/useFoldersStore";
+import { useFolderStore } from "@/store/features/folder/folderStore";
 
 export async function loadFoldersToStore() {
   const folders: FolderItem[] = await getRootFolders();
-  useFoldersStore.getState().setFolders(folders);
+  const folderStore = localStorage.getItem("folder-store");
+  if (!folderStore) useFolderStore.getState().setFolders(folders);
 }

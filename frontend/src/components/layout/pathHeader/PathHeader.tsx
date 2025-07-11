@@ -29,7 +29,6 @@ const PathHeader = () => {
     displayPath = [path[0], path[path.length - 1]];
   }
 
-  console.log(displayPath);
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -46,8 +45,6 @@ const PathHeader = () => {
             isMobile && path.length > 3 && index === 2
               ? path.length - 1
               : index;
-
-          console.log(index);
 
           return (
             <div key={index} className="flex items-center gap-1">
