@@ -18,3 +18,5 @@ export interface FormField<TFormValues> {
     value: string;
   }[];
 }
+
+export type FormActions = "create" | "edit" | "delete";

@@ -1,6 +1,7 @@
 # 🧠 StudIA — Gerenciador Acadêmico com IA e Modo Offline
 
-> Plataforma moderna para centralizar anotações, provas, tarefas, calendários e planejamento semanal, com suporte a IA, funcionamento offline e integração com Supabase.
+> Plataforma moderna para centralizar anotações, provas, tarefas, calendários e planejamento semanal, com suporte a IA,
+> funcionamento offline e integração com Supabase.
 
 ---
 
@@ -34,27 +35,31 @@
 ### ✨ Comandos úteis
 
 **Subir os containers**
+
 ```bash
 docker compose up -d
 ```
 
 **Iniciar FrontEnd Localmente**
+
 ```bash
 cd frontend
 npm install
 ```
 
 **Acessar Front-end**
+
 - App: http://localhost:3000
 
 Acessar Back-end
+
 - API: http://localhost:8080
 
 ---
 
 📦 raiz-do-projeto <br>
-├── frontend/        → Interface com Next.js <br>
-├── backend/         → API em Laravel <br>
+├── frontend/ → Interface com Next.js <br>
+├── backend/ → API em Laravel <br>
 ├── docker/ <br>
 ├── docker-compose.yml <br>
 ├── README.md <br>
@@ -63,6 +68,7 @@ Acessar Back-end
 ---
 
 🧠 Funcionalidades
+
 - ✅ Sistema de Login
 - ✅ Anotações com Markdown com o Tiptap
 - ✅ Organização por pastas/subpastas
@@ -79,9 +85,6 @@ Acessar Back-end
 🤝 Contribuindo
 Sinta-se livre para abrir issues, pull requests ou sugestões. Toda ajuda é bem-vinda!
 
-**Rotas Laravel**
-- Para registrar: /api/register precisa de nome, email e senha
-- Para login: /api/login precisa de email e senha
-- Para acessar os dados após o login: /api/me
+
 
 

@@ -11,7 +11,7 @@ export const folderFormConfig = {
   fields: folderFields,
   onSubmit: (
     data: FolderFormValues,
-    action: "create" | "edit",
+    action: "create" | "edit" | "delete",
     parentId?: string,
   ) => {
     const id: string = uuidv4();
@@ -19,12 +19,14 @@ export const folderFormConfig = {
 
     const { addFolder, updateFolder } = useFolderStore.getState();
 
-    if (action === "create") {
-      addFolder(folder, parentId);
-    }
+    switch (action) {
+      case "create":
+        addFolder(folder, parentId);
+        break;
 
-    if (action === "edit") {
-      updateFolder(parentId!, data);
+      case "edit":
+        updateFolder(parentId!, data);
+        break;
     }
   },
 };

@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { FormField } from "@/lib/forms/types";
+import { FormActions, FormField } from "@/lib/forms/types";
 
 interface FormBuilderProps<
   TSchema extends z.ZodTypeAny,
@@ -30,8 +30,8 @@ interface FormBuilderProps<
 > {
   schema: TSchema;
   fields: FormField<TFieldName>[];
-  onSubmit: (data: z.infer<TSchema>, action: "create" | "edit") => void;
-  action?: "create" | "edit";
+  onSubmit: (data: z.infer<TSchema>, action: FormActions) => void;
+  action?: FormActions;
   buttonText?: string;
   defaultValues?: DefaultValues<z.infer<TSchema>>;
 }
@@ -43,7 +43,7 @@ export function FormBuilder<
   schema,
   fields,
   onSubmit,
-  action = "create",
+  action,
   buttonText = "Salvar",
   defaultValues,
 }: FormBuilderProps<TSchema, TFieldName>) {
@@ -55,12 +55,12 @@ export function FormBuilder<
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((data) => onSubmit(data, action))}
+        onSubmit={form.handleSubmit((data) => onSubmit(data, action!))}
         className="space-y-4"
       >
         {fields.map((field) => (
           <ShadFormField
-            key={field.name}
+            key={field.name as string}
             control={form.control}
             name={field.name}
             render={({ field: controllerField }) => (

@@ -22,6 +22,7 @@ interface ActionsProps {
 }
 
 const FolderButtonAdd = ({ parentId }: { parentId: string }) => {
+  const [open, setOpen] = useState<boolean>(false);
   const [selectedType, setSelectedType] = useState<FormType | null>(null);
 
   const actions: ActionsProps[] = [
@@ -35,35 +36,51 @@ const FolderButtonAdd = ({ parentId }: { parentId: string }) => {
   ];
 
   return (
-    <Dialog onOpenChange={() => setSelectedType(null)}>
-      <DialogTrigger onClick={(e) => e.stopPropagation()}>
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        setOpen(v);
+        if (!v) setSelectedType(null);
+      }}
+    >
+      <DialogTrigger
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(true);
+        }}
+      >
         <PlusIcon className="size-5 hover:text-white" />
       </DialogTrigger>
 
       <DialogContent onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
-          <DialogTitle className="text-white">
-            Criar Item Dentro da Pasta
-          </DialogTitle>
+          <DialogTitle className="text-white">Criar Item</DialogTitle>
 
           <DialogDescription className="relative flex flex-col mt-6 gap-2">
-            {actions.map((item) => (
-              <Button
-                key={item.name}
-                variant={"folder"}
-                size={"lg"}
-                className="gap-5"
-                onClick={() => setSelectedType(item.name)}
-              >
-                <item.Icon className="size-5" />
-                {item.title}
-              </Button>
-            ))}
+            Criar um {selectedType || "item"} dentro da pasta
           </DialogDescription>
         </DialogHeader>
 
-        {selectedType && (
-          <DynamicForm type={selectedType} parentId={parentId} />
+        {selectedType ? (
+          <DynamicForm
+            type={selectedType}
+            parentId={parentId}
+            action={"create"}
+            onClose={() => setOpen(false)}
+          />
+        ) : (
+          actions.map((item) => (
+            <Button
+              key={item.name}
+              variant={"folder"}
+              size={"lg"}
+              className="gap-5"
+              onClick={() => setSelectedType(item.name)}
+            >
+              <item.Icon className="size-5" />
+              {item.title}
+            </Button>
+          ))
         )}
       </DialogContent>
     </Dialog>

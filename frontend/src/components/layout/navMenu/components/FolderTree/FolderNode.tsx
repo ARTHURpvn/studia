@@ -39,7 +39,7 @@ const FolderNode = ({
   };
 
   const chevronIcon = () => {
-    if (item.type !== "folder") return null;
+    if (item.type !== "folder" || !hasChildren) return null;
     return isOpen ? <ChevronDownIcon /> : <ChevronUpIcon />;
   };
 

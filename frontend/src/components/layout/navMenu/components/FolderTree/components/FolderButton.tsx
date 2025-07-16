@@ -1,12 +1,8 @@
-import {
-  EllipsisIcon,
-  FileIcon,
-  FolderIcon,
-  KanbanSquareIcon,
-} from "lucide-react";
+import { FileIcon, FolderIcon, KanbanSquareIcon } from "lucide-react";
 import React from "react";
 
 import FolderButtonAdd from "@/components/layout/navMenu/components/FolderTree/components/FolderButtonAdd";
+import FolderButtonEdit from "@/components/layout/navMenu/components/FolderTree/components/FolderButtonEdit";
 import { Button } from "@/components/ui/button";
 import { FolderItem } from "@/lib/features/types";
 
@@ -62,7 +58,7 @@ const FolderButton = ({
           }
         >
           <div>
-            <EllipsisIcon />
+            <FolderButtonEdit type={item.type} id={item.id} value={item.name} />
           </div>
 
           <div>

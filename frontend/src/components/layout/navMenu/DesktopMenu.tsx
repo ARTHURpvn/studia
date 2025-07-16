@@ -6,6 +6,7 @@ import {
   HelpCircleIcon,
   PlusIcon,
 } from "lucide-react";
+import { useState } from "react";
 
 import DesktopNavContainer from "@/components/layout/navMenu/components/DesktopNavContainer";
 import FolderTree from "@/components/layout/navMenu/components/FolderTree/FolderTree";
@@ -55,10 +56,17 @@ const DesktopMenu = () => {
 };
 
 const DialogFolder = () => {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger asChild>
-        <Button variant={"folder"} size={"folder"} className={"text-md"}>
+        <Button
+          variant={"folder"}
+          size={"folder"}
+          className={"text-md"}
+          onClick={() => setOpen(true)}
+        >
           <PlusIcon /> Adicionar Pasta
         </Button>
       </DialogTrigger>
@@ -68,7 +76,11 @@ const DialogFolder = () => {
           <DialogTitle>Criar uma Pasta</DialogTitle>
         </DialogHeader>
 
-        <DynamicForm type={"folder"} />
+        <DynamicForm
+          type={"folder"}
+          action={"create"}
+          onClose={() => setOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );
