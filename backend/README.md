@@ -69,3 +69,11 @@
  http://{host}/api/me
 ```
 
+<br>
+
+### Rota de buscar as pastas e subpastas
+
+```
+ http://{host}/api/folders
+```
+
