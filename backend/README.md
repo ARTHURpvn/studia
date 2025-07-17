@@ -71,7 +71,7 @@
 
 <br>
 
-### Rota de buscar as pastas e subpastas
+### Rota de buscar as pastas e subpastas - incompleta, só está listando pastas com subpastas dentro
 
 ```
  http://{host}/api/folders
