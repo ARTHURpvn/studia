@@ -96,3 +96,10 @@ fetch('http://localhost:8000/api/me', {
  http://{host}/api/folders
 ```
 
+
+### Rota para buscar as materias - GET - Mandar token jwt
+
+```
+http://localhost:8000/api/materia
+```
+
