@@ -22,24 +22,21 @@ export const signupUserByEmail = async ({
         },
       },
     );
-    return response.data; // É bom retornar os dados em caso de sucesso
+    return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       console.error("Erro Axios:", err.response?.data || err.message);
     } else {
       console.error("Erro desconhecido:", (err as Error).message);
     }
-    throw err; // CORREÇÃO: Re-lança o erro para o formulário poder capturá-lo
+    throw err;
   }
 };
 
-export const loginUserByEmail = async ({
-  email,
-  password,
-}: Omit<userProps, "name">) => {
+export const loginUserByEmail = async ({ email, password }: userProps) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/login", // CORREÇÃO: Adicionado o /api
+      "http://localhost:8000/api/login",
       {
         email,
         password,
@@ -57,6 +54,21 @@ export const loginUserByEmail = async ({
     } else {
       console.error("Erro desconhecido:", (err as Error).message);
     }
-    throw err; // CORREÇÃO: Re-lança o erro para o formulário poder capturá-lo
+    throw err;
+  }
+};
+
+export const getUserProfile = async () => {
+  try {
+    const response = await axios.get("http://localhost:8000/api/me");
+    console.log(response.data);
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      console.error("Erro Axios:", err.response?.data || err.message);
+    } else {
+      console.error("Erro desconhecido:", (err as Error).message);
+    }
+    throw err;
   }
 };

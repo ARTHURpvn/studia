@@ -15,7 +15,13 @@ export const folderFormConfig = {
     parentId?: string,
   ) => {
     const id: string = uuidv4();
-    const folder: FolderItem = { ...data, id, type: "folder", children: [] };
+    const folder: FolderItem = {
+      ...data,
+      id,
+      type: "folder",
+      children: [],
+      isMateria: false,
+    };
 
     const { addFolder, updateFolder } = useFolderStore.getState();
 

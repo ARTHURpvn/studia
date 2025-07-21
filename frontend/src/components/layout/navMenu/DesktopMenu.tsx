@@ -59,7 +59,7 @@ const DialogFolder = () => {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
       <DialogTrigger asChild>
         <Button
           variant={"folder"}

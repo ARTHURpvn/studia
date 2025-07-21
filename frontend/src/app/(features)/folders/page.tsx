@@ -1,10 +1,10 @@
-// ❌ sem "use client" aqui
+"use client";
 
 import FolderTree from "@/app/(features)/folders/components/FolderTree";
-import { getRootFolders } from "@/lib/folder";
+import { useFolderStore } from "@/store/features/folder/folderStore";
 
-const PastasPage = async () => {
-  const folders = await getRootFolders();
+const PastasPage = () => {
+  const folders = useFolderStore((s) => s.folders);
 
   return (
     <div className="w-full min-h-screen text-white">

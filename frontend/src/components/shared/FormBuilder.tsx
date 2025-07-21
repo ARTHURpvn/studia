@@ -95,6 +95,13 @@ export function FormBuilder<
                       type={field.type}
                       placeholder={field.placeholder}
                       {...controllerField}
+                      onChange={(e) => {
+                        const value =
+                          field.type === "number"
+                            ? Number(e.target.value)
+                            : e.target.value;
+                        controllerField.onChange(value);
+                      }}
                     />
                   )}
                 </FormControl>

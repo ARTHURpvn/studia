@@ -80,109 +80,116 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-sm space-y-10 mx-10 mt-10">
+    <div className="w-full lg:w-1/4 lg:bg-[var(--background)] h-fit lg:py-8 lg:px-6 space-y-10 mx-10 mt-10 rounded-md">
       <p>Cadastrar</p>
 
-      <div className={"py-2 px-4 w-full border rounded-sm"}>
-        <p>Conectar com o Google</p>
-      </div>
+      <div>
+        <div className={"py-2 px-4 w-full border rounded-sm"}>
+          <p>Conectar com o Google</p>
+        </div>
 
-      <div className={"items-center my-4 flex gap-4"}>
-        <Separator className="text-[var(--font)]" />
-        <p>OU</p>
-        <Separator className="text-[var(--font)]" />
-      </div>
+        <div className={"items-center my-4 flex gap-4"}>
+          <Separator className="text-[var(--font)]" />
+          <p>OU</p>
+          <Separator className="text-[var(--font)]" />
+        </div>
 
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
-        >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nome Completo</FormLabel>
-                <FormControl>
-                  <Input type="text" placeholder="Nome" {...field} required />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="Email" {...field} required />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Senha</FormLabel>
-                <FormControl>
-                  <div className="relative">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome Completo</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="Nome" {...field} required />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
                     <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Senha"
+                      type="email"
+                      placeholder="Email"
                       {...field}
                       required
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-                      tabIndex={-1}
-                    >
-                      {showPassword ? (
-                        <EyeOffIcon size={18} />
-                      ) : (
-                        <EyeIcon size={18} />
-                      )}
-                    </button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirmar Senha</FormLabel>
-                <FormControl>
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Confirme sua senha"
-                    {...field}
-                    required
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Confirmar</Button>
-          <div className="flex self-center mt-4 gap-2">
-            <p>Já possui uma conta?</p>
-            <Link href="/login" className="text-white">
-              Entrar
-            </Link>
-          </div>
-        </form>
-      </Form>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Senha</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Senha"
+                        {...field}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? (
+                          <EyeOffIcon size={18} />
+                        ) : (
+                          <EyeIcon size={18} />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirmar Senha</FormLabel>
+                  <FormControl>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Confirme sua senha"
+                      {...field}
+                      required
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Confirmar</Button>
+            <div className="flex self-center mt-4 gap-2">
+              <p>Já possui uma conta?</p>
+              <Link href="/login" className="text-white">
+                Entrar
+              </Link>
+            </div>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }

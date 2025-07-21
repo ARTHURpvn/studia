@@ -76,11 +76,9 @@ const FolderButtonEdit = ({
           </DialogTitle>
 
           <DialogDescription className="relative flex flex-col mt-6 gap-2">
-            <p>
-              {selectedType === "delete"
-                ? "Tem certeza que deseja Deletar essa pasta e seus filhos?"
-                : "Editar Pasta"}
-            </p>
+            {selectedType === "delete"
+              ? "Essa ação não poderá ser desfeita"
+              : "Editar Pasta"}
           </DialogDescription>
         </DialogHeader>
 
@@ -106,13 +104,20 @@ const FolderButtonEdit = ({
             onClose={() => setOpen(false)}
           />
         ) : (
-          <div className={"flex justify-end mt-4"}>
-            <Button variant={"ghost"} onClick={() => setSelectedType(null)}>
-              Voltar
-            </Button>
+          <>
+            <p className={"text-white"}>
+              Tem certeza que quer continuar com essa ação?
+            </p>
+            <div className={"flex justify-end mt-4 gap-2"}>
+              <Button variant={"ghost"} onClick={() => setSelectedType(null)}>
+                Voltar
+              </Button>
 
-            <Button onClick={() => deleteFolder(id)}>Confirmar</Button>
-          </div>
+              <Button onClick={() => deleteFolder(id)} className={"bg-red-600"}>
+                Confirmar
+              </Button>
+            </div>
+          </>
         )}
       </DialogContent>
     </Dialog>

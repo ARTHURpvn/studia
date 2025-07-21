@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import { FolderItem } from "@/lib/features/types";
 
 const foldersData: FolderItem[] = [
@@ -5,16 +7,19 @@ const foldersData: FolderItem[] = [
     id: "1",
     name: "Pasta",
     type: "folder",
+    isMateria: false,
     children: [
       {
         id: "1-1",
         name: "subpasta",
         type: "folder",
+        isMateria: false,
         children: [
           {
             id: "1-1-1",
             name: "aaaaaaaaa",
             type: "folder",
+            isMateria: false,
             children: [
               {
                 id: "1-1-1-1",
@@ -40,7 +45,9 @@ const foldersData: FolderItem[] = [
 ];
 
 export async function getRootFolders(): Promise<FolderItem[]> {
-  return new Promise((resolve) => setTimeout(() => resolve(foldersData), 100));
+  const response = await axios.get("http://localhost:8000/api/folders");
+  console.log(response.data);
+  return response.data;
 }
 
 export async function getFolderBySlug(
