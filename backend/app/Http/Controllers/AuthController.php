@@ -46,4 +46,30 @@ class AuthController extends Controller
 
         return response()->json($response->json(), $response->status());
     }
+
+    public function me(Request $request)
+    {
+        $jwt = $request->bearerToken();
+
+        if (!$jwt) {
+            return response()->json(['error' => 'Token não fornecido.'], 401);
+        }
+
+        $response = Http::withHeaders([
+            'apikey' => env('SUPABASE_KEY'),
+            'Authorization' => 'Bearer ' . $jwt,
+        ])->get(env('SUPABASE_URL') . '/auth/v1/user');
+
+        if ($response->failed()) {
+            return response()->json(['error' => 'Usuário não autenticado.'], 401);
+        }
+
+        $dados = $response->json();
+
+        return response()->json([
+            'id' => $dados['id'],
+            'email' => $dados['email'],
+            'name' => $dados['user_metadata']['name'] ?? null,
+        ]);
+    }
 }

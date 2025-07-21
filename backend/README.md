@@ -67,6 +67,25 @@
 
 ```
  http://{host}/api/me
+
+Como deve ser pedido, tem que mandar o token JWT que o login retorna no lugar do ${token}.
+
+const token = 'SEU_ACCESS_TOKEN_JWT';
+
+fetch('http://localhost:8000/api/me', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+})
+  .then(res => res.json())
+  .then(data => {
+    console.log('Usuário:', data);
+  })
+  .catch(error => {
+    console.error('Erro:', error);
+  });
+
 ```
 
 <br>
