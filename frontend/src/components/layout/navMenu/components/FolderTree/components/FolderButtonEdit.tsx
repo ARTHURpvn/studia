@@ -22,15 +22,13 @@ interface ActionsProps {
   Icon: React.FC<React.ComponentProps<"svg">>;
 }
 
-const FolderButtonEdit = ({
-  type,
-  id,
-  value,
-}: {
+interface Props {
   type: FormType;
   id: string;
   value: string;
-}) => {
+}
+
+const FolderButtonEdit = ({ type, id, value }: Props) => {
   const [selectedType, setSelectedType] = useState<"edit" | "delete" | null>(
     null,
   );

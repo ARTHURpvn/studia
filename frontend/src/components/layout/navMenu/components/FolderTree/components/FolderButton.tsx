@@ -57,9 +57,15 @@ const FolderButton = ({
             "hidden group-hover:flex items-center gap-2 absolute right-2 top-[8px] z-100"
           }
         >
-          <div>
-            <FolderButtonEdit type={item.type} id={item.id} value={item.name} />
-          </div>
+          {!item.isMateria && (
+            <div>
+              <FolderButtonEdit
+                type={item.type}
+                id={item.id}
+                value={item.name}
+              />
+            </div>
+          )}
 
           <div>
             <FolderButtonAdd parentId={item.id} />
