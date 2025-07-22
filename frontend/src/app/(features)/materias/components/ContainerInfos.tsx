@@ -32,7 +32,7 @@ const ContainerInfos = ({ type }: infosProps) => {
   return (
     <div
       className={
-        "w-52 h-23 bg-[var(--second)] flex flex-col px-5 py-2 gap-3 rounded-md"
+        "w-48 h-23 bg-[var(--second)] flex flex-col px-5 py-2 gap-3 rounded-md"
       }
     >
       <p className={"text-white"}>{title[type]}</p>

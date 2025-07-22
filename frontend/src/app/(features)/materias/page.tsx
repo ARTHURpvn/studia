@@ -55,7 +55,7 @@ const MateriasPage = () => {
           <InitialComponent />
         ) : (
           materias.map((item: Materias) => (
-            <Link href={""} key={item.id}>
+            <Link href={`/materias/${item.id}`} key={item.id}>
               <SelectMateria data={item} />
             </Link>
           ))

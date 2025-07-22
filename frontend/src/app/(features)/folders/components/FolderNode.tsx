@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { FolderItem } from "@/lib/features/types";
 
-const FolderNode = ({ item }: { item: FolderItem }) => {
+const FolderNode = ({ item }: { item: Omit<FolderItem, "id"> }) => {
   const router = useRouter();
 
   const handleClick = () => {
