@@ -9,14 +9,15 @@ import ContainerInfos from "@/app/(features)/materias/components/ContainerInfos"
 import InitialComponent from "@/app/(features)/materias/components/InitialComponent";
 import SelectMateria from "@/app/(features)/materias/components/SelectMateria";
 import { Button } from "@/components/ui/button";
-import { useWindowSize } from "@/hooks/useWindowSize";
 import {
   Materias,
   useMateriasStore,
 } from "@/store/features/materias/useMateriasStore";
 
 const MateriasPage = () => {
-  const device: "mobile" | "desktop" = useWindowSize();
+  const device: "mobile" | "desktop" = localStorage.getItem("device") as
+    | "mobile"
+    | "desktop";
   const materias: Materias[] = useStore(useMateriasStore).materias;
 
   return (
@@ -28,7 +29,7 @@ const MateriasPage = () => {
             <p>Nova Tarefa</p>
           </Button>
 
-          <AddMateriaButton device={device} />
+          <AddMateriaButton type={"materia"} />
         </header>
       )}
 
@@ -51,7 +52,7 @@ const MateriasPage = () => {
 
           <span />
 
-          <AddMateriaButton device={device} />
+          <AddMateriaButton type={"materia"} />
         </section>
       ) : (
         <section
@@ -84,7 +85,7 @@ const MateriasPage = () => {
                 }
               >
                 <InitialComponent />
-                <AddMateriaButton device={device} />
+                <AddMateriaButton type={"materia"} />
               </div>
             ) : (
               <div className={"grid grid-cols-3 self-center gap-7 mt-8 w-full"}>

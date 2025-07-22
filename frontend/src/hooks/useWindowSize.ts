@@ -15,6 +15,10 @@ export function useWindowSize(): "mobile" | "desktop" {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         setWidth(window.innerWidth);
+        localStorage.setItem(
+          "device",
+          window.innerWidth < 768 ? "mobile" : "desktop",
+        );
       }, 150); // debounce
     };
 

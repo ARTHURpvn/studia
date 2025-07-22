@@ -6,6 +6,7 @@ export const formConfigs = {
   note: folderFormConfig,
   kanban: folderFormConfig,
   materia: materiasFormConfig,
+  homework: folderFormConfig,
 };
 
 export type FormType = keyof typeof formConfigs;

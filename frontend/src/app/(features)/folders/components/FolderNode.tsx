@@ -4,10 +4,12 @@ import { FileIcon, FolderIcon, KanbanSquareIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { useWindowSize } from "@/hooks/useWindowSize";
 import { FolderItem } from "@/lib/features/types";
 
 const FolderNode = ({ item }: { item: Omit<FolderItem, "id"> }) => {
   const router = useRouter();
+  const device: "desktop" | "mobile" = useWindowSize();
 
   const handleClick = () => {
     if (item.type === "folder") {
@@ -26,8 +28,8 @@ const FolderNode = ({ item }: { item: Omit<FolderItem, "id"> }) => {
   return (
     <Button
       onClick={handleClick}
-      variant="folder"
-      size="folder"
+      variant={device === "mobile" ? "folder" : "secondary"}
+      size={device === "mobile" ? "folder" : "button"}
       className="flex flex-col gap-2"
     >
       <Icon className="size-7" />

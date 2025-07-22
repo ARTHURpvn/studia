@@ -14,8 +14,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const AddMateriaButton = ({ device }: { device: "mobile" | "desktop" }) => {
+const AddMateriaButton = ({ type }: { type: "materia" | "homework" }) => {
+  const device: "mobile" | "desktop" = localStorage.getItem("device") as
+    | "mobile"
+    | "desktop";
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const title = {
+    materia: "Matéria",
+    homework: "Tarefa",
+  }[type];
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => setIsOpen(open)}>
@@ -26,7 +34,7 @@ const AddMateriaButton = ({ device }: { device: "mobile" | "desktop" }) => {
           onClick={() => setIsOpen(true)}
         >
           <PlusIcon />
-          Adicionar Matéria
+          Adicionar {title}
         </Button>
       </DialogTrigger>
 
@@ -37,7 +45,7 @@ const AddMateriaButton = ({ device }: { device: "mobile" | "desktop" }) => {
         </DialogHeader>
 
         <DynamicForm
-          type={"materia"}
+          type={type}
           action={"create"}
           onClose={() => setIsOpen(false)}
         />
