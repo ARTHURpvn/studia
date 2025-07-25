@@ -9,8 +9,9 @@ interface CookieProps {
 
 const setCookies = async ({ name, value }: CookieProps) => {
   const cookie = await cookies();
-
   cookie.set(name, value);
+
+  return true;
 };
 
 export default setCookies;

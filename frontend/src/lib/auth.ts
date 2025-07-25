@@ -6,14 +6,16 @@ import { userProps } from "@/store/useAuthStore";
 
 export const signupUserByEmail = async ({
   name,
+  username,
   email,
   password,
 }: userProps) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/register",
+      "http://localhost:8000/auth/signup",
       {
         name,
+        username,
         email,
         password,
       },
@@ -37,7 +39,7 @@ export const signupUserByEmail = async ({
 export const loginUserByEmail = async ({ email, password }: userProps) => {
   try {
     const response = await axios.post(
-      "http://localhost:8000/api/login",
+      "http://localhost:8000/auth/login",
       {
         email,
         password,
@@ -48,6 +50,7 @@ export const loginUserByEmail = async ({ email, password }: userProps) => {
         },
       },
     );
+    console.log(response.data);
     return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
@@ -59,24 +62,16 @@ export const loginUserByEmail = async ({ email, password }: userProps) => {
   }
 };
 
-// export const getUserProfile = async () => {
-//   const cookie = await cookies();
-//   const token = cookie.get("accessToken")?.value;
-//   console.log(token);
-//   try {
-//     const response = await axios.get("http://localhost:8000/api/me", {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     console.log(response.data);
-//     return response.data;
-//   } catch (err: unknown) {
-//     if (axios.isAxiosError(err)) {
-//       console.error("Erro Axios:", err.response?.data || err.message);
-//     } else {
-//       console.error("Erro desconhecido:", (err as Error).message);
-//     }
-//     throw err;
-//   }
-// };
+export const loginUserByGoogle = async () => {
+  try {
+    const response = await axios.get("http://localhost:8000/auth/google");
+    console.log(response);
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      console.error("Erro Axios:", err.response?.data || err.message);
+    } else {
+      console.error("Erro desconhecido:", (err as Error).message);
+    }
+    throw err;
+  }
+};

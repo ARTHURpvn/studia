@@ -52,7 +52,7 @@ export default function LoginPage() {
       const errr = err as AxiosError<{ message?: string }>;
       const errorMsg =
         errr.response?.data?.message ||
-        "Credenciais inválidas ou erro no servidor.";
+        "Credenciais Inválidas ou Email não Verificado";
       toast.error(errorMsg);
     }
   }
@@ -61,9 +61,15 @@ export default function LoginPage() {
     <div className="space-y-10 w-full lg:w-1/4 h-fit lg:py-8 lg:px-6 lg:bg-[var(--background)] mx-10 mt-10">
       <p> Login </p>
       <div>
-        <div className={"py-2 px-4 w-full border rounded-sm"}>
-          <p>Conectar com o Google</p>
-        </div>
+        <Link
+          href={
+            "https://rwbidcjnmersbhgkzbpg.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/auth/callback"
+          }
+        >
+          <div className={"py-2 px-4 w-full border rounded-sm"}>
+            <p>Conectar com o Google</p>
+          </div>
+        </Link>
 
         <div className={"items-center my-4 flex gap-4"}>
           <Separator className="text-[var(--font)]" />
@@ -104,7 +110,7 @@ export default function LoginPage() {
             />
             <div className={"self-end"}>
               <Button variant={"ghost"} type="button" asChild>
-                <Link href={"/signup"}>Cadastrar</Link>
+                <Link href={"/auth/signup"}>Cadastrar</Link>
               </Button>
               <Button type="submit">Enviar</Button>
             </div>

@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { signupUserByEmail } from "@/lib/auth";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const passwordSchema = z
   .string()
@@ -35,6 +35,9 @@ const passwordSchema = z
 const FormSchema = z
   .object({
     name: z.string().min(10, "Nome precisa ter no mínimo 10 caracteres."),
+    username: z
+      .string()
+      .min(3, "UserName precisa ter no minimo 10 caracteres."),
     email: z.string().email("Email inválido"),
     password: passwordSchema,
     confirmPassword: z.string(),
@@ -52,6 +55,7 @@ export default function LoginPage() {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       name: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -60,13 +64,16 @@ export default function LoginPage() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      await signupUserByEmail({
+      const { register } = useAuthStore.getState();
+
+      await register({
         name: data.name,
+        username: data.username,
         email: data.email,
         password: data.password,
       });
 
-      toast.success("Conta criada com sucesso!");
+      toast.success("Confirme seu Email para logar!");
       router.push("/login");
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;
@@ -84,9 +91,15 @@ export default function LoginPage() {
       <p>Cadastrar</p>
 
       <div>
-        <div className={"py-2 px-4 w-full border rounded-sm"}>
-          <p>Conectar com o Google</p>
-        </div>
+        <Link
+          href={
+            "https://rwbidcjnmersbhgkzbpg.supabase.co/auth/v1/authorize?provider=google&redirect_to=http://localhost:3000/auth/callback"
+          }
+        >
+          <div className={"py-2 px-4 w-full border rounded-sm"}>
+            <p>Conectar com o Google</p>
+          </div>
+        </Link>
 
         <div className={"items-center my-4 flex gap-4"}>
           <Separator className="text-[var(--font)]" />
@@ -107,6 +120,24 @@ export default function LoginPage() {
                   <FormLabel>Nome Completo</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder="Nome" {...field} required />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>UserName</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder="Username"
+                      {...field}
+                      required
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,7 +214,7 @@ export default function LoginPage() {
             <Button type="submit">Confirmar</Button>
             <div className="flex self-center mt-4 gap-2">
               <p>Já possui uma conta?</p>
-              <Link href="/login" className="text-white">
+              <Link href="/auth/login" className="text-white">
                 Entrar
               </Link>
             </div>

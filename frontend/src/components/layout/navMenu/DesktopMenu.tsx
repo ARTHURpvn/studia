@@ -20,8 +20,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const DesktopMenu = () => {
+  const { authUser } = useAuthStore.getState();
   return (
     <aside
       className={
@@ -30,7 +32,7 @@ const DesktopMenu = () => {
     >
       <div className={"flex text-white items-center gap-6 p-4"}>
         <CircleUserRoundIcon className="size-9" strokeWidth={1.2} />
-        <p className={"text-2xl font-bold"}>Arthur Pavan</p>
+        <p className={"text-2xl font-bold"}>{authUser.username || ""}</p>
       </div>
 
       <DesktopNavContainer />

@@ -11,7 +11,7 @@ export function middleware(req: NextRequest) {
 
   if (!token && isProtected) {
     const loginUrl = req.nextUrl.clone();
-    loginUrl.pathname = "/login";
+    loginUrl.pathname = "/auth/login";
     return NextResponse.redirect(loginUrl);
   }
 
