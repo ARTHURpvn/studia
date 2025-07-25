@@ -21,20 +21,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useAuthStore } from "@/store/useAuthStore";
 
-const passwordSchema = z
-  .string()
-  .min(8, "A senha deve ter no mínimo 8 caracteres.")
-  .regex(/[a-z]/, "A senha deve conter pelo menos uma letra minúscula.")
-  .regex(/[A-Z]/, "A senha deve conter pelo menos uma letra maiúscula.")
-  .regex(/\d/, "A senha deve conter pelo menos um número.")
-  .regex(/[@$!%*?#&]/, "A senha deve conter pelo menos um caractere especial.");
-
 export default function LoginPage() {
   const router = useRouter();
 
   const FormSchema = z.object({
     email: z.string().email("Email inválido"),
-    password: passwordSchema,
+    password: z.string().min(8, "A senha deve ter no mínimo 8 caracteres."),
   });
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -46,12 +38,6 @@ export default function LoginPage() {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      // 1. Chame a função de login E capture a resposta dela
-      // const responseData = await loginUserByEmail({
-      //   email: data.email,
-      //   password: data.password,
-      // });
-
       const { login } = useAuthStore.getState();
 
       const responseData: boolean = await login({
@@ -97,12 +83,7 @@ export default function LoginPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      type={"email"}
-                      required={true}
-                      placeholder="Email"
-                      {...field}
-                    />
+                    <Input type={"email"} placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,12 +96,7 @@ export default function LoginPage() {
                 <FormItem>
                   <FormLabel>Senha</FormLabel>
                   <FormControl>
-                    <Input
-                      type={"password"}
-                      required={true}
-                      placeholder="Senha"
-                      {...field}
-                    />
+                    <Input type={"password"} placeholder="Senha" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

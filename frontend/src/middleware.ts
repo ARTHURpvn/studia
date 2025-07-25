@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("accessToken")?.value;
-  const protectedRoutes = ["/folders", "/calendar", "/materias"];
-  const url = req.nextUrl.clone();
+  const pathname = req.nextUrl.pathname;
 
-  if (
-    !token &&
-    protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route))
-  ) {
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+  const protectedRoutes = ["/", "/folders", "/calendar", "/materias"];
+  const isProtected = protectedRoutes.some((route) =>
+    route === "/" ? pathname === "/" : pathname.startsWith(route),
+  );
+
+  if (!token && isProtected) {
+    const loginUrl = req.nextUrl.clone();
+    loginUrl.pathname = "/login";
+    return NextResponse.redirect(loginUrl);
   }
+
+  return NextResponse.next();
 }
