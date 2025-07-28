@@ -16,12 +16,11 @@ services:
     envVars:
       - key: ENV
         value: production
-      - key: NEXT_PUBLIC_SUPABASE_URL
+      - key: SUPABASE_URL
         value: https://rwbidcjnmersbhgkzbpg.supabase.co
-      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+      - key: SUPABASE_KEY
         value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YmlkY2pubWVyc2JoZ2t6YnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMjA5OTYsImV4cCI6MjA2Njg5Njk5Nn0.qBgo3JpX27Mw8-sbEcJXczTUo4cr6zBTW1mznNYAL7o
-      - key: BACKEND_HOST
-        value: http://localhost:8000
+
 
   - type: web
     name: frontend-app
@@ -39,7 +38,9 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: SUPABASE_URL
+      - key: NEXT_PUBLIC_SUPABASE_URL
         value: https://rwbidcjnmersbhgkzbpg.supabase.co
-      - key: SUPABASE_KEY
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
         value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YmlkY2pubWVyc2JoZ2t6YnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMjA5OTYsImV4cCI6MjA2Njg5Njk5Nn0.qBgo3JpX27Mw8-sbEcJXczTUo4cr6zBTW1mznNYAL7o
+      - key: BACKEND_HOST
+        value: http://localhost:8000
