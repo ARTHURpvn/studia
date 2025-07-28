@@ -6,9 +6,10 @@ import { cookies } from "next/headers";
 import { FolderItem } from "@/lib/features/types";
 
 export async function getRootFolders(): Promise<FolderItem[]> {
+  const backend_host: string = process.env.BACKEND_HOST!;
   const cookie = await cookies();
   const token = cookie.get("accessToken");
-  const response = await axios.get("http://localhost:8000/api/folders", {
+  const response = await axios.get(`${backend_host}/api/folders`, {
     headers: {
       Authorization: `Bearer ${token?.value}`,
     },

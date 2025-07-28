@@ -18,9 +18,10 @@ export const addFolderToTree = async (
   if (!token) return;
 
   const { setFolders } = useFolderStore.getState();
+  const backend_host: string = process.env.BACKEND_HOST!;
 
   const res = await axios.post(
-    "http://localhost:8000/api/folders",
+    `${backend_host}/api/folders`,
     {
       ...folder,
     },
@@ -43,8 +44,10 @@ export async function updateFolderInTree(
   const token = cookie.get("accessToken")?.value;
   if (!token) return;
 
+  const backend_host: string = process.env.BACKEND_HOST!;
+
   axios.patch(
-    `http://localhost:8000/api/folders/${folderId}`,
+    `${backend_host}/api/folders/${folderId}`,
     {
       ...data,
     },
@@ -61,7 +64,9 @@ export async function deleteFolderFromTree(folderId: string): Promise<void> {
   const token = cookie.get("accessToken")?.value;
   if (!token) return;
 
-  axios.delete(`http://localhost:8000/api/folders/${folderId}`, {
+  const backend_host: string = process.env.BACKEND_HOST!;
+
+  axios.delete(`${backend_host}/api/folders/${folderId}}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -11,8 +11,10 @@ export const signupUserByEmail = async ({
   password,
 }: userProps) => {
   try {
+    const backend_host: string = process.env.BACKEND_HOST!;
+
     const response = await axios.post(
-      "http://localhost:8000/auth/signup",
+      `${backend_host}/auth/signup`,
       {
         name,
         username,
@@ -38,8 +40,9 @@ export const signupUserByEmail = async ({
 
 export const loginUserByEmail = async ({ email, password }: userProps) => {
   try {
+    const backend_host: string = process.env.BACKEND_HOST!;
     const response = await axios.post(
-      "http://localhost:8000/auth/login",
+      `${backend_host}/auth/login`,
       {
         email,
         password,
@@ -63,8 +66,9 @@ export const loginUserByEmail = async ({ email, password }: userProps) => {
 };
 
 export const loginUserByGoogle = async () => {
+  const backend_host: string = process.env.BACKEND_HOST!;
   try {
-    const response = await axios.get("http://localhost:8000/auth/google");
+    const response = await axios.get(`${backend_host}/auth/signup`);
     console.log(response);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
