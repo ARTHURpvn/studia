@@ -6,7 +6,8 @@ import {
 import { Materias } from "@/store/features/materias/useMateriasStore";
 
 export const materiasStoreActions = (
-  set,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  set: any,
   get: () => { materias: Materias[] },
 ) => ({
   addMateria: (materia: Materias) => {

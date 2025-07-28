@@ -1,19 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useStore } from "zustand/react";
 
 import { FolderItem } from "@/lib/features/types";
-import { loadFoldersToStore } from "@/lib/folderData";
 import { useFolderStore } from "@/store/features/folder/folderStore";
 
 import FolderNode from "./FolderNode";
 
 const FolderTree = () => {
-  useEffect(() => {
-    loadFoldersToStore();
-  }, []);
+  const folders: FolderItem[] = useStore(useFolderStore, (s) => s.folders);
+  console.log(folders);
 
-  const folders: FolderItem[] = useFolderStore((s) => s.folders);
   const [selectedPath, setSelectedPath] = useState<string>("");
 
   return (

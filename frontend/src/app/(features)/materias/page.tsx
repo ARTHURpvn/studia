@@ -9,15 +9,14 @@ import ContainerInfos from "@/app/(features)/materias/components/ContainerInfos"
 import InitialComponent from "@/app/(features)/materias/components/InitialComponent";
 import SelectMateria from "@/app/(features)/materias/components/SelectMateria";
 import { Button } from "@/components/ui/button";
+import { useWindowSize } from "@/hooks/useWindowSize";
 import {
   Materias,
   useMateriasStore,
 } from "@/store/features/materias/useMateriasStore";
 
 const MateriasPage = () => {
-  const device: "mobile" | "desktop" = localStorage.getItem("device") as
-    | "mobile"
-    | "desktop";
+  const device: "mobile" | "desktop" = useWindowSize();
   const materias: Materias[] = useStore(useMateriasStore).materias;
 
   return (

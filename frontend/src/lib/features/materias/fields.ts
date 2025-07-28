@@ -1,6 +1,8 @@
 import { FormField } from "@/lib/forms/types";
 
-export const materiasFields: FormField[] = [
+import { MateriasFormValues } from "./schema";
+
+export const materiasFields: FormField<MateriasFormValues>[] = [
   {
     name: "name",
     label: "Nome da Matéria",

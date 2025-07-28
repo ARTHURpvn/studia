@@ -1,7 +1,8 @@
 "use client";
 
+import { z } from "zod";
+
 import { FormBuilder } from "@/components/shared/FormBuilder";
-import { FolderFormValues } from "@/lib/features/folders/schema";
 import { formConfigs, FormType } from "@/lib/forms";
 import { FormActions } from "@/lib/forms/types";
 
@@ -9,14 +10,14 @@ export function DynamicForm({
   type,
   action,
   parentId,
-  defaultValue,
   onClose,
+  defaultValues = {},
 }: {
   type: FormType;
   action: FormActions;
   parentId?: string;
-  defaultValue?: FolderFormValues;
   onClose: () => void;
+  defaultValues?: Record<string, unknown>;
 }) {
   const config = formConfigs[type];
 
@@ -30,18 +31,25 @@ export function DynamicForm({
     return <p> Falta informacoes no formulario</p>;
   }
 
-  const enhancedSubmit = (data: FolderFormValues, action: FormActions) => {
-    onSubmit(data, action, parentId);
+  // Use a generic type that matches the schema
+  const enhancedSubmit = (
+    data: z.infer<typeof schema>,
+    action: FormActions,
+  ) => {
+    // Use type assertion to tell TypeScript that the data is of the correct type for this specific form config
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSubmit(data as any, action, parentId);
     onClose();
   };
 
   return (
     <FormBuilder
       schema={schema}
-      fields={fields}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      fields={fields as any}
       action={action}
       onSubmit={enhancedSubmit}
-      defaultValues={defaultValue || {}}
+      defaultValues={defaultValues}
     />
   );
 }

@@ -10,10 +10,13 @@ export function middleware(req: NextRequest) {
   );
 
   if (!token && isProtected) {
-    const loginUrl = req.nextUrl.clone();
-    loginUrl.pathname = "/auth/login";
-    return NextResponse.redirect(loginUrl);
+    console.warn("❌ Token não encontrado nos cookies.");
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!api|_next|static|favicon.ico).*)"],
+};

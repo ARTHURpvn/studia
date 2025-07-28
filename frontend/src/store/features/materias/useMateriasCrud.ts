@@ -14,7 +14,7 @@ export function addMateria(materias: Materias[], materia: Materias) {
     id,
     name: materia.name,
     type: "folder",
-    isMateria: true,
+    is_materia: true,
   };
 
   addFolder(folder);

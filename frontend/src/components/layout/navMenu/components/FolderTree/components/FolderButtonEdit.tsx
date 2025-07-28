@@ -2,6 +2,7 @@
 
 import { EllipsisIcon, FolderPenIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { DynamicForm } from "@/components/shared/DynamicForm";
 import { Button } from "@/components/ui/button";
@@ -49,6 +50,12 @@ const FolderButtonEdit = ({ type, id, value }: Props) => {
       Icon: Trash2Icon,
     },
   ];
+
+  const handleDelete = (id: string) => {
+    deleteFolder(id);
+    toast.success("Pasta deletada com sucesso!");
+    setOpen(false);
+  };
 
   return (
     <Dialog
@@ -98,7 +105,7 @@ const FolderButtonEdit = ({ type, id, value }: Props) => {
             type={type}
             action={selectedType}
             parentId={id}
-            defaultValue={{ name: value }}
+            defaultValues={{ name: value }}
             onClose={() => setOpen(false)}
           />
         ) : (
@@ -111,7 +118,7 @@ const FolderButtonEdit = ({ type, id, value }: Props) => {
                 Voltar
               </Button>
 
-              <Button onClick={() => deleteFolder(id)} className={"bg-red-600"}>
+              <Button onClick={() => handleDelete(id)} className={"bg-red-600"}>
                 Confirmar
               </Button>
             </div>

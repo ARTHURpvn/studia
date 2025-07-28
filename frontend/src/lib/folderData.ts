@@ -4,6 +4,6 @@ import { useFolderStore } from "@/store/features/folder/folderStore";
 
 export async function loadFoldersToStore() {
   const folders: FolderItem[] = await getRootFolders();
-  const folderStore = localStorage.getItem("folder-store");
-  if (!folderStore) useFolderStore.getState().setFolders(folders);
+  console.log(folders);
+  useFolderStore.getState().setFolders(folders);
 }

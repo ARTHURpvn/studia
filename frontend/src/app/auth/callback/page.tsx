@@ -21,7 +21,7 @@ const CallbackPage = () => {
 
     setTimeout(() => {
       window.location.href = "/";
-    }, 100);
+    }, 200);
   }, []);
 };
 

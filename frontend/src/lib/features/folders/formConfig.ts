@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 
 import { FolderItem } from "@/lib/features/types";
@@ -20,10 +21,15 @@ export const folderFormConfig = {
       id,
       type: "folder",
       children: [],
-      isMateria: false,
+      is_materia: false,
     };
 
     const { addFolder, updateFolder } = useFolderStore.getState();
+    const title: string = {
+      create: "Criada",
+      edit: "Editada",
+      delete: "Deletada",
+    }[action];
 
     switch (action) {
       case "create":
@@ -34,5 +40,7 @@ export const folderFormConfig = {
         updateFolder(parentId!, data);
         break;
     }
+
+    toast.success(`Pasta ${title} com sucesso!`);
   },
 };

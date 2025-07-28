@@ -4,6 +4,7 @@ export interface FolderItem {
   id: string;
   name: string;
   type: ItemType;
-  isMateria?: boolean;
+  is_materia?: boolean;
+  parent_id?: string;
   children?: FolderItem[];
 }

@@ -1,61 +1,69 @@
-import { FolderItem } from "@/lib/features/types";
+"use server";
 
-export function addFolderToTree(
-  tree: FolderItem[],
+import axios from "axios";
+import { cookies } from "next/headers";
+
+import { FolderItem } from "@/lib/features/types";
+import { getRootFolders } from "@/lib/folder";
+import { useFolderStore } from "@/store/features/folder/folderStore";
+
+// Funcao para criar uma nova pasta
+export const addFolderToTree = async (
   folder: FolderItem,
   parentId?: string,
-): FolderItem[] {
-  if (!parentId) return [...tree, folder];
+): Promise<void> => {
+  folder["parent_id"] = parentId;
+  const cookie = await cookies();
+  const token = cookie.get("accessToken")?.value;
+  if (!token) return;
 
-  return tree.map((item) => {
-    if (item.id === parentId) {
-      return {
-        ...item,
-        children: [...(item.children || []), folder],
-      };
-    }
+  const { setFolders } = useFolderStore.getState();
 
-    if (item.children) {
-      return {
-        ...item,
-        children: addFolderToTree(item.children, folder, parentId),
-      };
-    }
+  const res = await axios.post(
+    "http://localhost:8000/api/folders",
+    {
+      ...folder,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
-    return item;
-  });
-}
+  console.log(res);
+  setFolders(await getRootFolders());
+};
 
-export function updateFolderInTree(
-  tree: FolderItem[],
+export async function updateFolderInTree(
   folderId: string,
   data: Partial<FolderItem>,
-): FolderItem[] {
-  return tree.map((item) => {
-    if (item.id === folderId) {
-      return { ...item, ...data };
-    }
+): Promise<void> {
+  const cookie = await cookies();
+  const token = cookie.get("accessToken")?.value;
+  if (!token) return;
 
-    if (item.children) {
-      return {
-        ...item,
-        children: updateFolderInTree(item.children, folderId, data),
-      };
-    }
-
-    return item;
-  });
+  axios.patch(
+    `http://localhost:8000/api/folders/${folderId}`,
+    {
+      ...data,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 }
 
-export function deleteFolderFromTree(
-  tree: FolderItem[],
-  folderId: string,
-): FolderItem[] {
-  return tree
-    .filter((item) => item.id !== folderId)
-    .map((item) =>
-      item.children
-        ? { ...item, children: deleteFolderFromTree(item.children, folderId) }
-        : item,
-    );
+export async function deleteFolderFromTree(folderId: string): Promise<void> {
+  const cookie = await cookies();
+  const token = cookie.get("accessToken")?.value;
+  if (!token) return;
+
+  axios.delete(`http://localhost:8000/api/folders/${folderId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

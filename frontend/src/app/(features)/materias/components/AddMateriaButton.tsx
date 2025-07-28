@@ -13,11 +13,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 const AddMateriaButton = ({ type }: { type: "materia" | "homework" }) => {
-  const device: "mobile" | "desktop" = localStorage.getItem("device") as
-    | "mobile"
-    | "desktop";
+  const device: "mobile" | "desktop" = useWindowSize();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const title = {

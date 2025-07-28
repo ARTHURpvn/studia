@@ -15,10 +15,10 @@ interface FolderStore {
 
 export const useFolderStore = create<FolderStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       folders: [],
-      setFolders: (folders) => set({ folders }),
-      ...folderStoreActions(set, get),
+      setFolders: (folders: FolderItem[]) => set({ folders }),
+      ...folderStoreActions(set),
     }),
     {
       name: "folder-store",

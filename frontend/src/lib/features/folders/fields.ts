@@ -1,6 +1,8 @@
 import { FormField } from "@/lib/forms/types";
 
-export const folderFields: FormField[] = [
+import { FolderFormValues } from "./schema";
+
+export const folderFields: FormField<FolderFormValues>[] = [
   {
     name: "name",
     label: "Nome da pasta",

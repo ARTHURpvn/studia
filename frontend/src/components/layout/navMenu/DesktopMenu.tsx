@@ -6,7 +6,7 @@ import {
   HelpCircleIcon,
   PlusIcon,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import DesktopNavContainer from "@/components/layout/navMenu/components/DesktopNavContainer";
 import FolderTree from "@/components/layout/navMenu/components/FolderTree/FolderTree";
@@ -20,9 +20,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { loadFoldersToStore } from "@/lib/folderData";
 import { useAuthStore } from "@/store/useAuthStore";
 
 const DesktopMenu = () => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      loadFoldersToStore().then();
+    }
+  }, []);
   const { authUser } = useAuthStore.getState();
   return (
     <aside

@@ -1,3 +1,5 @@
+"use client";
+
 import { FileIcon, FolderIcon, KanbanSquareIcon } from "lucide-react";
 import React from "react";
 
@@ -57,7 +59,7 @@ const FolderButton = ({
             "hidden group-hover:flex items-center gap-2 absolute right-2 top-[8px] z-100"
           }
         >
-          {!item.isMateria && (
+          {!item.is_materia && (
             <div>
               <FolderButtonEdit
                 type={item.type}
