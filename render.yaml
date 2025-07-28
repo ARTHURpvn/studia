@@ -16,14 +16,30 @@ services:
     envVars:
       - key: ENV
         value: production
-      - key: DATABASE_URL
-        fromService:
-          name: backend-db
-          type: postgres
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: https://rwbidcjnmersbhgkzbpg.supabase.co
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YmlkY2pubWVyc2JoZ2t6YnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMjA5OTYsImV4cCI6MjA2Njg5Njk5Nn0.qBgo3JpX27Mw8-sbEcJXczTUo4cr6zBTW1mznNYAL7o
+      - key: BACKEND_HOST
+        value: http://localhost:8000
 
-  - type: postgres
-    name: backend-db
+  - type: web
+    name: frontend-app
+    env: node
     plan: free
-    ipAllowList: [] # libera acesso somente para serviços internos
-    databases:
-      - name: backend_database
+    branch: main
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    buildFilter:
+      paths:
+        - frontend/**
+        - render.yaml
+    rootDir: frontend
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        value: https://rwbidcjnmersbhgkzbpg.supabase.co
+      - key: SUPABASE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YmlkY2pubWVyc2JoZ2t6YnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMjA5OTYsImV4cCI6MjA2Njg5Njk5Nn0.qBgo3JpX27Mw8-sbEcJXczTUo4cr6zBTW1mznNYAL7o
