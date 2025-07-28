@@ -5,14 +5,13 @@ services:
     plan: free
     branch: main
     dockerfilePath: ./docker/python/Dockerfile
+    autoDeploy: true
     buildFilter:
       paths:
         - backend/**
         - docker/python/**
         - render.yaml
-    autoDeploy: true
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
-    healthCheckPath: /docs  # ou /health se tiver
+    healthCheckPath: /docs
     envVars:
       - key: ENV
         value: production
@@ -27,14 +26,14 @@ services:
     env: node
     plan: free
     branch: main
+    rootDir: frontend
     buildCommand: npm install && npm run build
     startCommand: npm run start
+    autoDeploy: true
     buildFilter:
       paths:
         - frontend/**
         - render.yaml
-    rootDir: frontend
-    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
@@ -42,5 +41,5 @@ services:
         value: https://rwbidcjnmersbhgkzbpg.supabase.co
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
         value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3YmlkY2pubWVyc2JoZ2t6YnBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzMjA5OTYsImV4cCI6MjA2Njg5Njk5Nn0.qBgo3JpX27Mw8-sbEcJXczTUo4cr6zBTW1mznNYAL7o
-      - key: BACKEND_HOST
-        value: http://localhost:8000
+      - key: NEXT_PUBLIC_API_URL
+        value: https://backend-app.onrender.com
