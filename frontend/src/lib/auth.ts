@@ -11,7 +11,7 @@ export const signupUserByEmail = async ({
   password,
 }: userProps) => {
   try {
-    const backend_host: string = process.env.BACKEND_HOST!;
+    const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
 
     const response = await axios.post(
       `${backend_host}/auth/signup`,
@@ -40,7 +40,7 @@ export const signupUserByEmail = async ({
 
 export const loginUserByEmail = async ({ email, password }: userProps) => {
   try {
-    const backend_host: string = process.env.BACKEND_HOST!;
+    const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
     const response = await axios.post(
       `${backend_host}/auth/login`,
       {
@@ -66,7 +66,7 @@ export const loginUserByEmail = async ({ email, password }: userProps) => {
 };
 
 export const loginUserByGoogle = async () => {
-  const backend_host: string = process.env.BACKEND_HOST!;
+  const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
   try {
     const response = await axios.get(`${backend_host}/auth/signup`);
     console.log(response);

@@ -3,7 +3,7 @@
 import { FileIcon, FolderIcon, PlusIcon, SquareKanbanIcon } from "lucide-react";
 import { useState } from "react";
 
-import { DynamicForm } from "@/components/shared/DynamicForm"; // seu form builder
+import { DynamicForm } from "@/components/shared/DynamicForm";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

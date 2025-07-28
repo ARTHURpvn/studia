@@ -10,8 +10,6 @@ import FolderNode from "./FolderNode";
 
 const FolderTree = () => {
   const folders: FolderItem[] = useStore(useFolderStore, (s) => s.folders);
-  console.log(folders);
-
   const [selectedPath, setSelectedPath] = useState<string>("");
 
   return (

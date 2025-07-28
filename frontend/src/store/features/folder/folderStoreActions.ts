@@ -8,7 +8,7 @@ import {
 } from "./folderCrud";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const folderStoreActions = (set: any) => ({
-  addFolder: (folder: FolderItem, parentId?: string) => {
+  addFolder: (folder: Partial<FolderItem>, parentId?: string) => {
     addFolderToTree(folder, parentId).then(
       async () => {
         set({ folders: (await getRootFolders()) as FolderItem[] });

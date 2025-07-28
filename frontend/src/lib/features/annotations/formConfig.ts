@@ -1,22 +1,21 @@
 import { toast } from "sonner";
 
+import { noteFields } from "@/lib/features/annotations/fields";
+import { NoteFormValues, noteSchema } from "@/lib/features/annotations/schema";
 import { FolderItem } from "@/lib/features/types";
 import { useFolderStore } from "@/store/features/folder/folderStore";
 
-import { folderFields } from "./fields";
-import { FolderFormValues, folderSchema } from "./schema";
-
-export const folderFormConfig = {
-  schema: folderSchema,
-  fields: folderFields,
+export const noteFormConfig = {
+  schema: noteSchema,
+  fields: noteFields,
   onSubmit: (
-    data: FolderFormValues,
+    data: NoteFormValues,
     action: "create" | "edit" | "delete",
     parentId?: string,
   ) => {
     const folder: Partial<FolderItem> = {
       name: data.name,
-      type: "folder",
+      type: "note",
       is_materia: false,
     };
 

@@ -9,7 +9,7 @@ import { useFolderStore } from "@/store/features/folder/folderStore";
 
 // Funcao para criar uma nova pasta
 export const addFolderToTree = async (
-  folder: FolderItem,
+  folder: Partial<FolderItem>,
   parentId?: string,
 ): Promise<void> => {
   folder["parent_id"] = parentId;
@@ -18,7 +18,7 @@ export const addFolderToTree = async (
   if (!token) return;
 
   const { setFolders } = useFolderStore.getState();
-  const backend_host: string = process.env.BACKEND_HOST!;
+  const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
 
   const res = await axios.post(
     `${backend_host}/api/folders`,
@@ -44,19 +44,21 @@ export async function updateFolderInTree(
   const token = cookie.get("accessToken")?.value;
   if (!token) return;
 
-  const backend_host: string = process.env.BACKEND_HOST!;
+  const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
 
-  axios.patch(
-    `${backend_host}/api/folders/${folderId}`,
-    {
-      ...data,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
+  axios
+    .patch(
+      `${backend_host}/api/folders/${folderId}`,
+      {
+        ...data,
       },
-    },
-  );
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+    .then();
 }
 
 export async function deleteFolderFromTree(folderId: string): Promise<void> {
@@ -64,11 +66,13 @@ export async function deleteFolderFromTree(folderId: string): Promise<void> {
   const token = cookie.get("accessToken")?.value;
   if (!token) return;
 
-  const backend_host: string = process.env.BACKEND_HOST!;
+  const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
 
-  axios.delete(`${backend_host}/api/folders/${folderId}}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  axios
+    .delete(`${backend_host}/api/folders/${folderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then();
 }

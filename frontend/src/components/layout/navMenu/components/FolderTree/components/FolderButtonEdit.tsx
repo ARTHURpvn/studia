@@ -106,7 +106,10 @@ const FolderButtonEdit = ({ type, id, value }: Props) => {
             action={selectedType}
             parentId={id}
             defaultValues={{ name: value }}
-            onClose={() => setOpen(false)}
+            onClose={() => {
+              setOpen(false);
+              setSelectedType(null);
+            }}
           />
         ) : (
           <>
