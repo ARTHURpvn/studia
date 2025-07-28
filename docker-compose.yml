@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   frontend:
     build:
@@ -16,21 +18,24 @@ services:
     networks:
       - app-network
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_URL=http://backend:8000
 
   backend:
     build:
       context: .
-      dockerfile: docker/laravel/Dockerfile
+      dockerfile: docker/python/Dockerfile
     container_name: backend_app
-    working_dir: /var/www
+    working_dir: /app
     volumes:
-      - ./backend:/var/www
+      - ./backend:/app
     ports:
       - "8000:8000"
-    command: php artisan serve --host=0.0.0.0 --port=8000
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     networks:
       - app-network
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
 
 networks:
   app-network:

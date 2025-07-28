@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: backend-app
+    env: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./docker/python/Dockerfile
+    buildFilter:
+      paths:
+        - backend/**
+        - docker/python/**
+        - render.yaml
+    autoDeploy: true
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    healthCheckPath: /docs  # ou /health se tiver
+    envVars:
+      - key: ENV
+        value: production
+      - key: DATABASE_URL
+        fromService:
+          name: backend-db
+          type: postgres
+
+  - type: postgres
+    name: backend-db
+    plan: free
+    ipAllowList: [] # libera acesso somente para serviços internos
+    databases:
+      - name: backend_database
