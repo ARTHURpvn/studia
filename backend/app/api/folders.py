@@ -19,16 +19,20 @@ def get_folders(authorization: str = Header(...)):
     params = {
         "select": "id, name, type, is_materia, parent_id",
     }
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Request folders |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
     try:
         response = requests.get(f"{SUPABASE_URL}/rest/v1/folders", headers=headers, params=params)
-        print(f"[get Folders] Materias recebidas: {response.json()}")
+        print(f"Materias recebidas: {response.json()}")
 
         # Funcao para montar json com o children
         folder_tree = build_tree(response.json())
+        print(f"Arvore Retornada: {folder_tree}\n")
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
 
         return folder_tree
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao buscar pastas: {str(e)}")
+
 
 
 # Requisitos para criar pasta
@@ -54,20 +58,25 @@ def create_folder(
     form_data = {
         "name": request.name, "user_id": user_id, "type": request.type, "is_materia": request.is_materia
     }
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Create Folder |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
 
-    print(f"[create Folder] Form: {form_data}")
+    print(f"Form: {form_data}")
 
     try:
         if request.parent_id:
             form_data["parent_id"] = request.parent_id
-            print(f"[create Folder] Parent ID: {request.parent_id}")
+            print(f"Parent ID: {request.parent_id}")
 
         response = requests.post(f"{SUPABASE_URL}/rest/v1/folders", headers=headers, json=form_data)
-        print(f"[create Folder] Folder created successfully: {response.status_code}")
+        print(f"Folder created successfully with status Code: {response.status_code}\n")
+
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
 
         return response.status_code
     except Exception as e:
-        print(f"[create Folder] Error: {str(e)}")
+        print(f"Error: {str(e)}\n")
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
+
         raise HTTPException(status_code=500, detail=f"Erro ao criar pasta: {str(e)}")
 
 
@@ -95,10 +104,13 @@ def update_folder(
     data = {
         "name": payload.name
     }
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Edit Folder |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
 
     try:
         response = requests.patch(f"{SUPABASE_URL}/rest/v1/folders", headers=headers, params=params, json=data)
-        print(f"[update Folder] Response: {response.status_code}")
+        print(f"Folder edited successfully With response code: {response.status_code}\n")
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
+
         return {"message": f"Pasta atualizada com sucesso!"}
 
     except Exception as e:
@@ -117,12 +129,21 @@ def delete_folder( folder_id: str, authorization: str = Header(...) ):
     params = {
         "id": f"eq.{folder_id}"
     }
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Delete Folder |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
+
+    print(f"Header Recebido: {headers}")
+    print(f"Params para Deletar: {params}")
 
     try:
+        print("Deletando...")
         response = requests.delete(f"{SUPABASE_URL}/rest/v1/folders", headers=headers, params=params)
-        print(f"[delete Folder] Response: {response.status_code}")
-        return {"message": f"Pasta atualizada com sucesso!"}
+        print(f"Response: {response.status_code}\n")
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
+
+        return {"message": f"Pasta Deletada com sucesso!"}
 
     except Exception as e:
-        print(f"[delete Folder] Error: {str(e)}")
+
+        print(f"Error: {str(e)}")
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-| Erro Delete Folder |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
         raise HTTPException(status_code=500, detail=f"Erro ao editar a pasta: {str(e)}")
