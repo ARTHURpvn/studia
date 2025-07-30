@@ -1,4 +1,4 @@
-from app.api import folders
+from app.api import folders, annotations
 from app.config import SUPABASE_KEY, SUPABASE_URL
 from app.db.supabase_client import supabase
 from fastapi import APIRouter, Header, HTTPException
@@ -15,3 +15,4 @@ def get_profile(authorization: str = Header(...)):
         raise HTTPException(status_code=401, detail="Unauthorized")
 
 router.include_router(folders.router, prefix="/folders", tags=["Folders"])
+router.include_router(annotations.router, prefix="/annotations", tags=["Annotations"])

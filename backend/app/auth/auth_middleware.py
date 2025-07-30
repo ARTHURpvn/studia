@@ -5,6 +5,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 class AuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         path = request.url.path
+        if request.method == "OPTIONS":
+            return await call_next(request)
 
         if path.startswith("/api/"):
             auth_header = request.headers.get("Authorization", "")
@@ -13,6 +15,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
             print("-=-=-=-=-=-=-=-=-=-=-=-=-| Middleware |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
 
             print(f"Rota protegida: {method} {path}")
+            print(f"Token: {auth_header}")
             if not token:
                 print("Nenhum token fornecido")
                 raise HTTPException(status_code=401, detail="Token de autenticação ausente\n")

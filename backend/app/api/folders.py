@@ -48,18 +48,21 @@ def create_folder(
     request: CreateFolderRequest,
     user_id: str = Depends(get_current_user_id),
     authorization: str = Header(...)
-
 ):
     headers = {
         "apikey": SUPABASE_KEY,
-        "Authorization":  authorization
+        "Authorization": authorization,
+        "Prefer": "return=representation"  # <- Necessário para retornar o id
     }
 
     form_data = {
-        "name": request.name, "user_id": user_id, "type": request.type, "is_materia": request.is_materia
+        "name": request.name,
+        "user_id": user_id,
+        "type": request.type,
+        "is_materia": request.is_materia
     }
-    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Create Folder |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
 
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Create Folder |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
     print(f"Form: {form_data}")
 
     try:
@@ -67,17 +70,27 @@ def create_folder(
             form_data["parent_id"] = request.parent_id
             print(f"Parent ID: {request.parent_id}")
 
-        response = requests.post(f"{SUPABASE_URL}/rest/v1/folders", headers=headers, json=form_data)
-        print(f"Folder created successfully with status Code: {response.status_code}\n")
+        response = requests.post(
+            f"{SUPABASE_URL}/rest/v1/folders",
+            headers=headers,
+            json=form_data
+        )
 
+        print(f"Folder created successfully with status Code: {response.status_code}\n")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
 
-        return response.status_code
+        created_folder = response.json()[0]
+        return {
+            "message": "Pasta criada com sucesso!",
+            "folder_id": created_folder.get("id"),
+            "status_code": response.status_code
+        }
+
     except Exception as e:
         print(f"Error: {str(e)}\n")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
-
         raise HTTPException(status_code=500, detail=f"Erro ao criar pasta: {str(e)}")
+
 
 
 class UpdateFolderRequest(BaseModel):
