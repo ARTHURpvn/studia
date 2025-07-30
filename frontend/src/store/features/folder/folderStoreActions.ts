@@ -8,15 +8,20 @@ import {
 } from "./folderCrud";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const folderStoreActions = (set: any) => ({
-  addFolder: (folder: Partial<FolderItem>, parentId?: string) => {
-    addFolderToTree(folder, parentId).then(
-      async () => {
-        set({ folders: (await getRootFolders()) as FolderItem[] });
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+  addFolder: async (folder: Partial<FolderItem>, parentId?: string) => {
+    try {
+      const folderId = await addFolderToTree(folder, parentId);
+
+      if (!folderId) {
+        console.warn("Não foi possível criar a pasta.");
+        return;
+      }
+
+      set({ folders: (await getRootFolders()) as FolderItem[] });
+      return folderId;
+    } catch (err) {
+      console.error("Erro ao adicionar pasta:", err);
+    }
   },
 
   updateFolder: (folderId: string, data: Partial<FolderItem>) => {

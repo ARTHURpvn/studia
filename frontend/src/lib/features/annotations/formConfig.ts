@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { noteFields } from "@/lib/features/annotations/fields";
 import { NoteFormValues, noteSchema } from "@/lib/features/annotations/schema";
 import { FolderItem } from "@/lib/features/types";
+import { useNoteStore } from "@/store/features/annotations/noteStore";
 import { useFolderStore } from "@/store/features/folder/folderStore";
 
 export const noteFormConfig = {
@@ -20,6 +21,7 @@ export const noteFormConfig = {
     };
 
     const { addFolder, updateFolder } = useFolderStore.getState();
+    const { addAnnotation } = useNoteStore.getState();
     const title: string = {
       create: "Criada",
       edit: "Editada",
@@ -28,7 +30,11 @@ export const noteFormConfig = {
 
     switch (action) {
       case "create":
-        addFolder(folder, parentId);
+        const res: string = addFolder(folder, parentId)!;
+        const createNote = async () => {
+          addAnnotation(await res);
+        };
+        createNote().then();
         break;
 
       case "edit":

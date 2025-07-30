@@ -35,6 +35,8 @@ const FolderNode = ({
       setIsOpen((prev) => !prev);
     } else {
       onSelect?.(fullPath);
+      //apex-studio-teste.vercel.app/newsUpdates?id=41f04ae9-c252-43fa-a636-39ba4d4be683
+      window.location.href = `/${item.type == "note" ? "annotation" : item.type}/${item.id}`;
     }
   };
 

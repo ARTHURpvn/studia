@@ -10,6 +10,7 @@ import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
+import { JSONContent } from "@tiptap/core";
 import { Highlight } from "@tiptap/extension-highlight";
 import { Image } from "@tiptap/extension-image";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
@@ -64,6 +65,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useWindowSize } from "@/hooks/use-window-size";
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
+import { useNoteStore } from "@/store/features/annotations/noteStore";
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -163,15 +165,23 @@ const MobileToolbarContent = ({
   </>
 );
 
-export function SimpleEditor() {
+export function SimpleEditor({ folder_id }: { folder_id: string }) {
   const isMobile = useIsMobile();
   const windowSize = useWindowSize();
   const [mobileView, setMobileView] = React.useState<
     "main" | "highlighter" | "link"
   >("main");
   const toolbarRef = React.useRef<HTMLDivElement>(null);
+  const { updateAnnotation } = useNoteStore.getState();
 
   const editor = useEditor({
+    onUpdate: ({ editor }) => {
+      const json: JSONContent = editor.getJSON();
+      console.log(json);
+      console.log(folder_id);
+      updateAnnotation(folder_id, json);
+    },
+
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
     editorProps: {

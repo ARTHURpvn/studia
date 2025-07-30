@@ -11,8 +11,9 @@ import { useFolderStore } from "@/store/features/folder/folderStore";
 export const addFolderToTree = async (
   folder: Partial<FolderItem>,
   parentId?: string,
-): Promise<void> => {
+): Promise<string | undefined> => {
   folder["parent_id"] = parentId;
+
   const cookie = await cookies();
   const token = cookie.get("accessToken")?.value;
   if (!token) return;
@@ -22,9 +23,7 @@ export const addFolderToTree = async (
 
   const res = await axios.post(
     `${backend_host}/api/folders`,
-    {
-      ...folder,
-    },
+    { ...folder },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,8 +31,8 @@ export const addFolderToTree = async (
     },
   );
 
-  console.log(res);
   setFolders(await getRootFolders());
+  return res.data.folder_id;
 };
 
 export async function updateFolderInTree(
