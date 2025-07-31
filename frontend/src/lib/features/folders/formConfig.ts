@@ -1,5 +1,3 @@
-import { toast } from "sonner";
-
 import { FolderItem } from "@/lib/features/types";
 import { useFolderStore } from "@/store/features/folder/folderStore";
 
@@ -21,22 +19,15 @@ export const folderFormConfig = {
     };
 
     const { addFolder, updateFolder } = useFolderStore.getState();
-    const title: string = {
-      create: "Criada",
-      edit: "Editada",
-      delete: "Deletada",
-    }[action];
 
     switch (action) {
       case "create":
-        addFolder(folder, parentId);
+        addFolder(folder, parentId).then();
         break;
 
       case "edit":
         updateFolder(parentId!, data);
         break;
     }
-
-    toast.success(`Pasta ${title} com sucesso!`);
   },
 };

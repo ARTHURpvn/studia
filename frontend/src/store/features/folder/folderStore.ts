@@ -8,7 +8,10 @@ import { folderStoreActions } from "./folderStoreActions";
 interface FolderStore {
   folders: FolderItem[];
   setFolders: (folders: FolderItem[]) => void;
-  addFolder: (folder: Partial<FolderItem>, parentId?: string) => void | string;
+  addFolder: (
+    folder: Partial<FolderItem>,
+    parentId?: string,
+  ) => Promise<string | undefined>;
   updateFolder: (folderId: string, data: Partial<FolderItem>) => void;
   deleteFolder: (folderId: string) => void;
 }

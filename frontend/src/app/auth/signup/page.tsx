@@ -73,7 +73,7 @@ export default function LoginPage() {
         password: data.password,
       });
 
-      toast.success("Confirme seu Email para logar!");
+      toast.warning("Confirme seu Email para logar!");
       router.push("/auth/login");
     } catch (err) {
       const error = err as AxiosError<{ message?: string }>;

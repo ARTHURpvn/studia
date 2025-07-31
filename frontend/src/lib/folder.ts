@@ -4,8 +4,9 @@ import axios from "axios";
 import { cookies } from "next/headers";
 
 import { FolderItem } from "@/lib/features/types";
+import { ResponseGetFolder } from "@/lib/types";
 
-export async function getRootFolders(): Promise<FolderItem[]> {
+export async function getRootFolders(): Promise<ResponseGetFolder> {
   const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
   const cookie = await cookies();
   const token = cookie.get("accessToken");
@@ -20,7 +21,8 @@ export async function getRootFolders(): Promise<FolderItem[]> {
 export async function getFolderBySlug(
   slug: string,
 ): Promise<FolderItem | null> {
-  const foldersData = await getRootFolders();
+  const res = await getRootFolders();
+  const foldersData = res.folders;
   const findByName = (name: string, items: FolderItem[]): FolderItem | null => {
     for (const item of items) {
       if (item.name === name) return item;

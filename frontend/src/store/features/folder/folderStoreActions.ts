@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 import { FolderItem } from "@/lib/features/types";
 import { getRootFolders } from "@/lib/folder";
 
@@ -10,39 +12,58 @@ import {
 export const folderStoreActions = (set: any) => ({
   addFolder: async (folder: Partial<FolderItem>, parentId?: string) => {
     try {
-      const folderId = await addFolderToTree(folder, parentId);
+      const res = await addFolderToTree(folder, parentId);
+      if (!res) return;
 
-      if (!folderId) {
-        console.warn("Não foi possível criar a pasta.");
-        return;
+      const folderId = res.folder_id;
+
+      const data = await getRootFolders();
+      set({ folders: data.folders });
+
+      if (res.status_code >= 200 && res.status_code < 300) {
+        toast.success(res.message);
+        return folderId;
       }
-
-      set({ folders: (await getRootFolders()) as FolderItem[] });
-      return folderId;
+      toast.error(res.message);
+      return;
     } catch (err) {
+      toast.error("");
       console.error("Erro ao adicionar pasta:", err);
     }
   },
 
-  updateFolder: (folderId: string, data: Partial<FolderItem>) => {
-    updateFolderInTree(folderId, data).then(
-      async () => {
-        set({ folders: await getRootFolders() });
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+  updateFolder: async (folderId: string, data: Partial<FolderItem>) => {
+    try {
+      const res = await updateFolderInTree(folderId, data);
+      if (!res) return;
+
+      const folders_data = await getRootFolders();
+
+      set({ folders: folders_data.folders });
+
+      if (res?.status_code >= 200 && res?.status_code < 300) {
+        toast.success(res?.message);
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (err) {
+      console.error("Erro durante updateFolder:", err);
+      toast.error("Erro ao atualizar a pasta.");
+    }
   },
 
   deleteFolder: async (folderId: string) => {
-    deleteFolderFromTree(folderId).then(
-      async () => {
-        set({ folders: await getRootFolders() });
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+    const res = await deleteFolderFromTree(folderId);
+    if (!res) return;
+
+    const folders = await getRootFolders();
+    set({ folders: folders.folders });
+
+    if (res.status_code >= 200 && res.status_code < 300) {
+      toast.success(res.message);
+      return;
+    }
+    toast.error(res.message);
+    return;
   },
 });
