@@ -3,7 +3,7 @@ from typing import Optional
 import requests
 from app.config import SUPABASE_KEY, SUPABASE_URL
 from app.dependencies import build_tree, get_current_user_id
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, Header
 from pydantic import BaseModel
 
 router = APIRouter()
@@ -22,16 +22,21 @@ def get_folders(authorization: str = Header(...)):
     print("-=-=-=-=-=-=-=-=-=-=-=-=-| Request folders |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
     try:
         response = requests.get(f"{SUPABASE_URL}/rest/v1/folders", headers=headers, params=params)
-        print(f"Materias recebidas: {response.json()}")
+        print(f"Materia received: {response.json()}")
 
         # Funcao para montar json com o children
         folder_tree = build_tree(response.json())
-        print(f"Arvore Retornada: {folder_tree}\n")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
 
-        return folder_tree
+        return {
+            "folders": folder_tree,
+        }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao buscar pastas: {str(e)}")
+        return {
+            "message": "Erro ao buscar a Pasta!",
+            "status_code": 500,
+            "error": str(e)
+        }
 
 
 
@@ -76,21 +81,24 @@ def create_folder(
             json=form_data
         )
 
-        print(f"Folder created successfully with status Code: {response.status_code}\n")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
 
         created_folder = response.json()[0]
         return {
             "message": "Pasta criada com sucesso!",
-            "folder_id": created_folder.get("id"),
-            "status_code": response.status_code
+            "status_code": response.status_code,
+            "folder_id": created_folder.get("id")
         }
 
     except Exception as e:
         print(f"Error: {str(e)}\n")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
-        raise HTTPException(status_code=500, detail=f"Erro ao criar pasta: {str(e)}")
 
+        return {
+            "message": "Erro ao criar a Pasta!",
+            "status_code": 500,
+            "error": str(e)
+        }
 
 
 class UpdateFolderRequest(BaseModel):
@@ -124,11 +132,18 @@ def update_folder(
         print(f"Folder edited successfully With response code: {response.status_code}\n")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
 
-        return {"message": f"Pasta atualizada com sucesso!"}
+        return {
+            "message": f"Pasta atualizada com sucesso!",
+            "status_code": response.status_code,
+        }
 
     except Exception as e:
         print(f"[update Folder] Error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Erro ao editar a pasta: {str(e)}")
+        return {
+            "message": "Erro ao atualizar a Pasta!",
+            "status_code": 500,
+            "error": str(e)
+        }
 
 
 # Excluindo pasta informada
@@ -153,10 +168,17 @@ def delete_folder( folder_id: str, authorization: str = Header(...) ):
         print(f"Response: {response.status_code}\n")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
 
-        return {"message": f"Pasta Deletada com sucesso!"}
+        return {
+            "message": f"Pasta Deletada com sucesso!",
+            "status_code": response.status_code,
+        }
 
     except Exception as e:
 
         print(f"Error: {str(e)}")
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-| Erro Delete Folder |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
-        raise HTTPException(status_code=500, detail=f"Erro ao editar a pasta: {str(e)}")
+        return {
+            "message": "Erro ao deletar a Pasta!",
+            "status_code": 500,
+            "error": str(e)
+        }

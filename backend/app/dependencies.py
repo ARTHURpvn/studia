@@ -18,7 +18,7 @@ def get_current_user_id(authorization: str = Header(...)) -> str:
 
 def build_tree(folders, parent_id=None):
     tree = []
-    print(f"\n[BuildTree] <UNK> Tree: {folders}")
+    print(f"\n[BuildTree] Tree: {folders}")
     for folder in folders:
         if folder["parent_id"] == parent_id:
             children = build_tree(folders, folder["id"])
