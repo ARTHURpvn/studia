@@ -1,5 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { memo, useCallback, useMemo, useState } from "react";
 
 import FolderButton from "@/components/layout/navMenu/components/FolderTree/components/FolderButton";
 import FolderChildren from "@/components/layout/navMenu/components/FolderTree/components/FolderChildren";
@@ -13,6 +14,36 @@ interface FolderNodeProps {
   currentPath?: string;
 }
 
+// Separate component for rendering children to prevent unnecessary re-renders
+const FolderNodeChildren = memo(
+  ({
+    children,
+    isRoot,
+    isRootSelected,
+    isChildSelected,
+    isOpen,
+  }: {
+    children: React.ReactNode;
+    isRoot: boolean;
+    isRootSelected: boolean;
+    isChildSelected: boolean;
+    isOpen: boolean;
+  }) => {
+    return (
+      <FolderChildren
+        isRoot={isRoot}
+        isRootSelected={isRootSelected}
+        isChildSelected={isChildSelected}
+        isOpen={isOpen}
+      >
+        {children}
+      </FolderChildren>
+    );
+  },
+);
+
+FolderNodeChildren.displayName = "FolderNodeChildren";
+
 const FolderNode = ({
   item,
   isRoot = false,
@@ -21,29 +52,46 @@ const FolderNode = ({
   currentPath = "",
 }: FolderNodeProps) => {
   const [isOpen, setIsOpen] = useState(true);
+  const router = useRouter();
 
-  const hasChildren = !!item.children?.length;
-  const fullPath = currentPath ? `${currentPath}/${item.id}` : item.id;
+  // Memoize these values to prevent recalculation on every render
+  const { hasChildren, fullPath, isSelected, isChildSelected, isRootSelected } =
+    useMemo(() => {
+      const hasChildren = !!item.children?.length;
+      const fullPath = currentPath ? `${currentPath}/${item.id}` : item.id;
+      const isSelected = selectedPath === fullPath;
+      const isChildSelected = selectedPath.startsWith(`${fullPath}/`);
+      const isRootSelected =
+        selectedPath.split("/").length === 2 &&
+        selectedPath.startsWith(item.id);
 
-  const isSelected = selectedPath === fullPath;
-  const isChildSelected = selectedPath.startsWith(`${fullPath}/`);
-  const isRootSelected =
-    selectedPath.split("/").length === 2 && selectedPath.startsWith(item.id);
+      return {
+        hasChildren,
+        fullPath,
+        isSelected,
+        isChildSelected,
+        isRootSelected,
+      };
+    }, [item.id, item.children, currentPath, selectedPath]);
 
-  const handleClick = () => {
+  // Memoize the click handler to prevent recreation on every render
+  const handleClick = useCallback(() => {
     if (item.type === "folder") {
       setIsOpen((prev) => !prev);
     } else {
       onSelect?.(fullPath);
-      //apex-studio-teste.vercel.app/newsUpdates?id=41f04ae9-c252-43fa-a636-39ba4d4be683
-      window.location.href = `/${item.type == "note" ? "annotation" : item.type}/${item.id}`;
+      // Use router.push instead of direct window.location manipulation
+      router.push(
+        `/${item.type === "note" ? "annotation" : item.type}/${item.id}`,
+      );
     }
-  };
+  }, [item.type, item.id, fullPath, onSelect, router]);
 
-  const chevronIcon = () => {
+  // Memoize the chevron icon to prevent recreation on every render
+  const chevronIcon = useMemo(() => {
     if (item.type !== "folder" || !hasChildren) return null;
     return isOpen ? <ChevronDownIcon /> : <ChevronUpIcon />;
-  };
+  }, [item.type, hasChildren, isOpen]);
 
   return (
     <div className="flex flex-col">
@@ -52,11 +100,11 @@ const FolderNode = ({
         isRoot={isRoot}
         isSelected={isSelected}
         onClick={handleClick}
-        showChevron={chevronIcon()}
+        showChevron={chevronIcon}
       />
 
       {hasChildren && (
-        <FolderChildren
+        <FolderNodeChildren
           isRoot={isRoot}
           isRootSelected={isRootSelected}
           isChildSelected={isChildSelected}
@@ -73,10 +121,11 @@ const FolderNode = ({
                 currentPath={fullPath}
               />
             ))}
-        </FolderChildren>
+        </FolderNodeChildren>
       )}
     </div>
   );
 };
 
-export default FolderNode;
+// Export a memoized version of the component to prevent unnecessary re-renders
+export default memo(FolderNode);
