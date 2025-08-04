@@ -110,8 +110,6 @@ def update_folder(
     payload: UpdateFolderRequest,
     folder_id: str,
     authorization: str = Header(...)
-
-
 ):
     headers = {
         "apikey": SUPABASE_KEY,

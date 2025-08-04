@@ -2,6 +2,8 @@ from app.db.supabase_client import supabase
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
+from config import SUPABASE_KEY
+
 router = APIRouter()
 
 class LoginRequest(BaseModel):
@@ -42,7 +44,7 @@ def login(request: LoginRequest):
 @router.get("/google")
 def login():
     try:
-        url = f"https://rwbidcjnmersbhgkzbpg.supabase.co/auth/v1/callback"
+        url = "https://rwbidcjnmersbhgkzbpg.supabase.co/auth/v1/callback"
         return {"url": url}
     except Exception as e:
         raise HTTPException(status_code=401, detail="Erro ao gerar URL do Google")
@@ -71,4 +73,44 @@ def signup(request: SignupRequest):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
 
+@router.get("/logout")
+def logout(authorization: str = Header(...)):
 
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": authorization
+    }
+    try:
+        response = requests.post(f"{SUPABASE_URL}/auth/v1/logout", headers=headers)
+        return {
+            "message": "Desconectado com sucesso!",
+            "status_code": response.status_code
+        }
+
+
+    except Exception as e:
+        return {
+            "message": "Erro ao logout",
+            "status_code": 401,
+            "error": str(e)
+
+        }
+
+
+@router.get("/token")
+def validate_token(authorization: str = Header(...)):
+    try:
+        # Extract token from Authorization header
+        token = authorization.replace("Bearer ", "")
+
+        # Validate token with Supabase
+        response = supabase.auth.get_user(token)
+
+        # If we get here, the token is valid
+        return {"valid": True}
+    except Exception as e:
+        # Token is invalid or expired
+        return JSONResponse(
+            status_code=401,
+            content={"valid": False, "reason": "invalid-token", "error": str(e)}
+        )

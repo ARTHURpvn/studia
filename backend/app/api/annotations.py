@@ -6,10 +6,6 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
-
-class CreateNoteRequest(BaseModel):
-    parent_id: str
-
 # Criar Anotacao
 @router.post("/{folder_id}")
 def create_annotation(
@@ -21,7 +17,6 @@ def create_annotation(
     header = {
         "apikey": SUPABASE_KEY,
         "Authorization": authorization,
-
     }
 
     data = {
@@ -47,7 +42,8 @@ def create_annotation(
 
         return {
             "message": "Erro ao criar a anotacao",
-            "status_code": 500
+            "status_code": 500,
+            "error": str(e)
         }
 
 
@@ -88,7 +84,67 @@ def read_annotations(
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
         return {
             "message": "Erro ao criar a anotacao",
-            "status_code": 500
+            "status_code": 500,
+            "error": str(e)
+        }
+
+class EditAnnotation(BaseModel):
+    content: object
+
+
+@router.patch("/{folder_id}")
+def update_annotation(
+        folder_id: str,
+        request: EditAnnotation,
+        authorization: str = Header(...),
+):
+    header = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": authorization,
+    }
+    data = {
+        "content": request.content
+    }
+
+    try:
+        response = requests.patch(f"{SUPABASE_URL}/rest/v1/annotations?parent_id=eq.{folder_id}", headers=header, json=data)
+        data = response.json()
+        print(data[0]["content"])
+
+        return {
+            "message": "Anotacao Salva com sucesso!",
+            "status_code": response.status_code
+        }
+    except Exception as e:
+        return {
+            "message": "Erro ao atualizar a anotacao",
+            "status_code": 500,
+            "error": str(e)
         }
 
 
+@router.delete("/{folder_id}")
+def delete_annotation(
+        folder_id: str,
+        authorization: str = Header(...),
+):
+    header = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": authorization,
+    }
+
+    try:
+        response = requests.delete(f"{SUPABASE_URL}/rest/v1/annotations/?parent_id=eq.{folder_id}", headers=header)
+        data = response.json()
+        print(data[0]["content"])
+        return {
+            "message": "Anotacao Excluida com sucesso!",
+            "status_code": response.status_code
+        }
+
+    except Exception as e:
+        return {
+            "message": "Erro ao excluir a anotacao",
+            "status_code": 500,
+            "error": str(e)
+        }
