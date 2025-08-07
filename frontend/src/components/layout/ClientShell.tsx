@@ -1,11 +1,15 @@
 "use client";
 
+import TokenExpirationChecker from "@/components/auth/TokenExpirationChecker";
 import NavBar from "@/components/layout/navMenu/NavBar";
 import PathHeader from "@/components/layout/pathHeader/PathHeader";
 
 const ClientShell = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-1 overflow-hidden">
+      {/* Token expiration checker */}
+      <TokenExpirationChecker />
+
       {/* Menu Desktop */}
       <aside className="hidden lg:block w-70 h-full">
         <NavBar />

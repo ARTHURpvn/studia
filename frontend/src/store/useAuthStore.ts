@@ -4,7 +4,12 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { loginUserByEmail, signupUserByEmail } from "@/lib/auth";
+import {
+  loginUserByEmail,
+  logoutUser,
+  signupUserByEmail,
+  validateToken,
+} from "@/lib/auth";
 import setCookies from "@/lib/setCookies";
 
 export interface userProps {
@@ -27,8 +32,9 @@ interface AuthStore {
 interface AuthStoreActions {
   login: (user: userProps) => Promise<boolean>;
   register: (user: userProps) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   setAuthUser: (user: userAuth) => void;
+  checkTokenExpiration: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore & AuthStoreActions>()(
@@ -65,8 +71,39 @@ export const useAuthStore = create<AuthStore & AuthStoreActions>()(
       },
 
       register: async (data: userProps) => await signupUserByEmail(data),
-      logout: () => set({ authUser: { userId: "", username: "", name: "" } }),
+
+      logout: async () => {
+        await logoutUser();
+        set({ authUser: { userId: "", username: "", name: "" } });
+      },
+
       setAuthUser: (user: userAuth) => set({ authUser: user }),
+
+      checkTokenExpiration: async () => {
+        try {
+          // Validate token using backend endpoint
+          const validationResult = await validateToken();
+
+          if (!validationResult.valid) {
+            // Token is invalid or expired, log the user out
+            console.log(`Token validation failed: ${validationResult.reason}`);
+            await logoutUser();
+            set({ authUser: { userId: "", username: "", name: "" } });
+
+            // Only show toast for expired tokens, not for missing tokens (which is normal for non-logged in users)
+            if (validationResult.reason !== "no-token") {
+              toast.error(
+                "Sua sessão expirou. Por favor, faça login novamente.",
+              );
+            }
+          }
+        } catch (error) {
+          console.error("Error checking token validation:", error);
+          // If there's an error, it's safer to logout
+          await logoutUser();
+          set({ authUser: { userId: "", username: "", name: "" } });
+        }
+      },
     }),
     {
       name: "auth-store",

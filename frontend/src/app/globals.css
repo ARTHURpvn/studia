@@ -8,7 +8,7 @@
     --background: #1b1b1b;
     --foreground: #151515;
     --font: #666666;
-    --second: rgba(73, 73, 73, 0.2);
+    --second: #49494933;
     --red: #d60000;
     --tag-red: #532323;
     --tag-orange: #533723;
@@ -18,7 +18,7 @@
 
 body {
     background-color: var(--foreground) !important;
-    color: var(--font) !important;
+    color: var(--font);
 }
 
 .fc {

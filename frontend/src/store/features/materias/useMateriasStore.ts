@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 import { materiasStoreActions } from "@/store/features/materias/useMateriasStoreActions";
 
 export interface Materias {
-  id: string;
+  id?: string;
   name: string;
   teacher: string;
   semester: number;
@@ -13,16 +13,19 @@ export interface Materias {
 
 interface MateriasStore {
   materias: Materias[];
+  isLoading: boolean;
   setMaterias: (materias: Materias[]) => void;
-  addMateria: (materia: Materias) => void;
-  updateMateria: (id: string, data: Partial<Materias>) => void;
-  deleteMateria: (id: string) => void;
+  fetchMaterias: () => Promise<void>;
+  addMateria: (materia: Omit<Materias, "id">) => Promise<void>;
+  updateMateria: (id: string, data: Partial<Materias>) => Promise<void>;
+  deleteMateria: (id: string) => Promise<void>;
 }
 
 export const useMateriasStore = create<MateriasStore>()(
   persist(
     (set, get) => ({
       materias: [],
+      isLoading: false,
       setMaterias: (materias) => set({ materias }),
       ...materiasStoreActions(set, get),
     }),

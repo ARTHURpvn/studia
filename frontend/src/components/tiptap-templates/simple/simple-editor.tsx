@@ -1,5 +1,4 @@
 "use client";
-
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss";
 import "@/components/tiptap-node/code-block-node/code-block-node.scss";
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss";
@@ -10,7 +9,6 @@ import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
-import { JSONContent } from "@tiptap/core";
 import { Highlight } from "@tiptap/extension-highlight";
 import { Image } from "@tiptap/extension-image";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
@@ -19,10 +17,18 @@ import { Superscript } from "@tiptap/extension-superscript";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
 import { Selection } from "@tiptap/extensions";
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
+import {
+  Editor,
+  EditorContent,
+  EditorContext,
+  JSONContent,
+  useEditor,
+} from "@tiptap/react";
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit";
 import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 // --- Icons ---
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon";
@@ -31,7 +37,6 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon";
 import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension";
 // --- Tiptap Node ---
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension";
-import content from "@/components/tiptap-templates/simple/data/content.json";
 // --- Components ---
 import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button";
 import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button";
@@ -63,9 +68,12 @@ import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
 // --- Hooks ---
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useWindowSize } from "@/hooks/use-window-size";
+import { updateAnnotation } from "@/lib/annotation";
+import { debounce } from "@/lib/debounce";
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
-import { useNoteStore } from "@/store/features/annotations/noteStore";
+
+// Component to display the saving status
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -165,23 +173,35 @@ const MobileToolbarContent = ({
   </>
 );
 
-export function SimpleEditor({ folder_id }: { folder_id: string }) {
+export function SimpleEditor({
+  folder_id,
+  annotation,
+}: {
+  folder_id: string;
+  annotation: JSONContent;
+}) {
   const isMobile = useIsMobile();
   const windowSize = useWindowSize();
-  const [mobileView, setMobileView] = React.useState<
-    "main" | "highlighter" | "link"
-  >("main");
-  const toolbarRef = React.useRef<HTMLDivElement>(null);
-  const { updateAnnotation } = useNoteStore.getState();
+  const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
+    "main",
+  );
+  const debouncedSaveRef = useRef(
+    debounce((json: JSONContent) => {
+      updateAnnotation(folder_id, json).then(() =>
+        toast.success("Anotacao Salva"),
+      );
+    }, 2000), // 1 segundo de debounce
+  );
+
+  const handleUpdate = useCallback(({ editor }: { editor: Editor }) => {
+    const json: JSONContent = editor.getJSON();
+    debouncedSaveRef.current(json);
+  }, []);
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
-    onUpdate: ({ editor }) => {
-      const json: JSONContent = editor.getJSON();
-      console.log(json);
-      console.log(folder_id);
-      updateAnnotation(folder_id, json);
-    },
-
+    content: annotation,
+    onUpdate: handleUpdate,
     immediatelyRender: false,
     shouldRerenderOnTransaction: false,
     editorProps: {
@@ -219,7 +239,6 @@ export function SimpleEditor({ folder_id }: { folder_id: string }) {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
   });
 
   const bodyRect = useCursorVisibility({
@@ -227,7 +246,7 @@ export function SimpleEditor({ folder_id }: { folder_id: string }) {
     overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isMobile && mobileView !== "main") {
       setMobileView("main");
     }
