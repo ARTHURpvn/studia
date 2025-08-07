@@ -1,8 +1,7 @@
+from app.config import SUPABASE_KEY
 from app.db.supabase_client import supabase
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Header
 from pydantic import BaseModel
-
-from config import SUPABASE_KEY
 
 router = APIRouter()
 

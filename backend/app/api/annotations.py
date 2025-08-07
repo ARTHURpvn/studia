@@ -1,3 +1,5 @@
+import json
+
 import requests
 from app.config import SUPABASE_KEY, SUPABASE_URL
 from app.dependencies import build_tree, get_current_user_id
@@ -89,7 +91,7 @@ def read_annotations(
         }
 
 class EditAnnotation(BaseModel):
-    content: object
+    content: dict
 
 
 @router.patch("/{folder_id}")
@@ -98,24 +100,33 @@ def update_annotation(
         request: EditAnnotation,
         authorization: str = Header(...),
 ):
+    json_content = json.loads(json.dumps(request.content))
+
+
     header = {
         "apikey": SUPABASE_KEY,
         "Authorization": authorization,
+        "Content-Type": "application/json",
+        "Prefer": "return=representation"
     }
+
     data = {
-        "content": request.content
+        "content": request.content,
     }
 
     try:
-        response = requests.patch(f"{SUPABASE_URL}/rest/v1/annotations?parent_id=eq.{folder_id}", headers=header, json=data)
-        data = response.json()
-        print(data[0]["content"])
 
+        print("Payload bruto:")
+        print(data["content"])
+
+        response = requests.patch(f"https://rwbidcjnmersbhgkzbpg.supabase.co/rest/v1/annotations?parent_id=eq.{folder_id}", headers=header, json=data)
+        print(response)
         return {
             "message": "Anotacao Salva com sucesso!",
             "status_code": response.status_code
         }
     except Exception as e:
+        print("teste2")
         return {
             "message": "Erro ao atualizar a anotacao",
             "status_code": 500,

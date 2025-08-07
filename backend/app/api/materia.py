@@ -10,7 +10,6 @@ router = APIRouter()
 
 class CreateMateria(BaseModel):
     name: Optional[str]
-    is_materia: Optional[bool]
     teacher: Optional[str]
     folder_id: Optional[str]
     semester: Optional[int]
@@ -21,16 +20,15 @@ class CreateMateria(BaseModel):
 @router.post("/")
 def create_materia(
         request: CreateMateria,
-        authorization_token: str = Header(...),
+        authorization: str = Header(...),
 ):
     headers = {
         "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {authorization_token}",
+        "Authorization": f"Bearer {authorization}",
     }
 
     data = {
         "name": request.name,
-        "is_materia": request.is_materia,
         "teacher": request.teacher,
         "folder_id": request.folder_id,
         "semester": request.semester,
@@ -95,7 +93,6 @@ def update_materia(
     }
 
     if request.name: data["name"] = request.name
-    if request.is_materia: data["is_materia"] = request.is_materia
     if request.teacher: data["teacher"] = request.teacher
     if request.semester: data["semester"] = request.semester
     if request.media: data["media"] = request.media
