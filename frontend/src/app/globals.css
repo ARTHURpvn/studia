@@ -4,7 +4,6 @@
 
 :root {
     --radius: 0.625rem;
-
     --background: #1b1b1b;
     --foreground: #151515;
     --font: #666666;
@@ -73,6 +72,11 @@ body {
 
 .fc-day-today {
     background-color: #272727 !important;
+}
+
+
+.tiptap-toolbar {
+    background: rgba(27, 27, 27, 0.71);
 }
 
 @media only screen and (max-width: 600px) {

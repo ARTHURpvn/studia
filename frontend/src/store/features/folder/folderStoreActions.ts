@@ -88,6 +88,7 @@ export const folderStoreActions = (set: any) => ({
       if (!res) return;
 
       const folderId = res.folder_id;
+      console.log(res);
 
       if (res.status_code >= 200 && res.status_code < 300) {
         // Get the complete folder data from the server

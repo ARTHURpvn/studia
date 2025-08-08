@@ -14,6 +14,7 @@ export const fetchAnnotation = async (folder_id: string) => {
     },
   });
 
+  console.log(res.data.annotations);
   return res.data.annotations;
 };
 

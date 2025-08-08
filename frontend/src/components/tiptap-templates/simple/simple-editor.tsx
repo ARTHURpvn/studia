@@ -9,6 +9,7 @@ import "@/components/tiptap-node/paragraph-node/paragraph-node.scss";
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss";
 
+import BubbleMenu from "@tiptap/extension-bubble-menu";
 import { Highlight } from "@tiptap/extension-highlight";
 import { Image } from "@tiptap/extension-image";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
@@ -71,7 +72,7 @@ import { useWindowSize } from "@/hooks/use-window-size";
 import { updateAnnotation } from "@/lib/annotation";
 import { debounce } from "@/lib/debounce";
 // --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils";
+import { handleImageUpload } from "@/lib/tiptap-utils";
 
 // Component to display the saving status
 
@@ -190,7 +191,7 @@ export function SimpleEditor({
       updateAnnotation(folder_id, json).then(() =>
         toast.success("Anotacao Salva"),
       );
-    }, 2000), // 1 segundo de debounce
+    }, 2000), // 2 segundo de debounce
   );
 
   const handleUpdate = useCallback(({ editor }: { editor: Editor }) => {
@@ -222,19 +223,21 @@ export function SimpleEditor({
         },
       }),
       HorizontalRule,
+      BubbleMenu,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TaskList,
       TaskItem.configure({ nested: true }),
       Highlight.configure({ multicolor: true }),
-      Image,
+      Image.configure({
+        inline: false,
+        allowBase64: true,
+      }),
       Typography,
       Superscript,
       Subscript,
       Selection,
       ImageUploadNode.configure({
         accept: "image/*",
-        maxSize: MAX_FILE_SIZE,
-        limit: 3,
         upload: handleImageUpload,
         onError: (error) => console.error("Upload failed:", error),
       }),

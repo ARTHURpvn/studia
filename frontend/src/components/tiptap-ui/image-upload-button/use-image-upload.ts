@@ -38,7 +38,7 @@ export interface UseImageUploadConfig {
 export function canInsertImage(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false;
   if (
-    !isExtensionAvailable(editor, "imageUpload") ||
+    !isExtensionAvailable(editor, "image") ||
     isNodeTypeSelected(editor, ["image"])
   )
     return false;
@@ -59,19 +59,34 @@ export function isImageActive(editor: Editor | null): boolean {
  */
 export function insertImage(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false;
-  if (!canInsertImage(editor)) return false;
 
-  try {
-    return editor
-      .chain()
-      .focus()
-      .insertContent({
-        type: "imageUpload",
-      })
-      .run();
-  } catch {
-    return false;
-  }
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+
+      editor
+        .chain()
+        .focus()
+        .setImage({
+          src: base64, // ✅ agora o src é base64 local
+          alt: file.name,
+        })
+        .run();
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  input.click();
+  return true;
 }
 
 /**

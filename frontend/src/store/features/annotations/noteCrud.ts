@@ -9,6 +9,7 @@ export const createNote = async (parent_id: string): Promise<void> => {
   if (!token) return;
 
   const backend_host: string = process.env.NEXT_PUBLIC_API_URL!;
+  console.log(parent_id);
   const res = await axios.post(
     `${backend_host}/api/annotations/${parent_id}`,
     {},

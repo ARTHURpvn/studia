@@ -10,7 +10,9 @@ import {
   signupUserByEmail,
   validateToken,
 } from "@/lib/auth";
+import { getRootFolders } from "@/lib/folder";
 import setCookies from "@/lib/setCookies";
+import { useFolderStore } from "@/store/features/folder/folderStore";
 
 export interface userProps {
   name?: string;
@@ -48,6 +50,7 @@ export const useAuthStore = create<AuthStore & AuthStoreActions>()(
 
       login: async (data: userProps) => {
         const responseData = await loginUserByEmail(data);
+        const { setFolders } = useFolderStore.getState();
 
         if (responseData) {
           toast.success("Login realizado com sucesso!");
@@ -63,6 +66,8 @@ export const useAuthStore = create<AuthStore & AuthStoreActions>()(
               name: responseData.name,
             },
           });
+          const data = await getRootFolders();
+          setFolders(data.folders);
           return true;
         } else {
           toast.error("Não foi possível obter o token de acesso.");
@@ -75,11 +80,14 @@ export const useAuthStore = create<AuthStore & AuthStoreActions>()(
       logout: async () => {
         await logoutUser();
         set({ authUser: { userId: "", username: "", name: "" } });
+        const { setFolders } = useFolderStore.getState();
+        setFolders([]);
       },
 
       setAuthUser: (user: userAuth) => set({ authUser: user }),
 
       checkTokenExpiration: async () => {
+        const { setFolders } = useFolderStore.getState();
         try {
           // Validate token using backend endpoint
           const validationResult = await validateToken();
@@ -89,12 +97,14 @@ export const useAuthStore = create<AuthStore & AuthStoreActions>()(
             console.log(`Token validation failed: ${validationResult.reason}`);
             await logoutUser();
             set({ authUser: { userId: "", username: "", name: "" } });
+            setFolders([]);
 
             // Only show toast for expired tokens, not for missing tokens (which is normal for non-logged in users)
             if (validationResult.reason !== "no-token") {
               toast.error(
                 "Sua sessão expirou. Por favor, faça login novamente.",
               );
+              window.location.href = "/auth/login";
             }
           }
         } catch (error) {
@@ -102,6 +112,7 @@ export const useAuthStore = create<AuthStore & AuthStoreActions>()(
           // If there's an error, it's safer to logout
           await logoutUser();
           set({ authUser: { userId: "", username: "", name: "" } });
+          setFolders([]);
         }
       },
     }),

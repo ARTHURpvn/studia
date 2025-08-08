@@ -20,6 +20,7 @@ export const noteFormConfig = {
 
     const { addFolder, updateFolder } = useFolderStore.getState();
     const { addAnnotation } = useNoteStore.getState();
+    console.log(parentId, " parentId");
 
     switch (action) {
       case "create":

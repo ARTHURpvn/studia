@@ -106,13 +106,12 @@ export const createMateria = async (
     // Then create the materia with the folder ID
     try {
       const res = await axios.post(
-        `${backend_host}/api/materia`,
+        `${backend_host}/api/materia/${folderId}`,
         {
           name: materia.name,
           teacher: materia.teacher,
           semester: materia.semester,
           media: materia.rating,
-          folder_id: folderId,
         },
         {
           headers: {
@@ -146,7 +145,7 @@ export const createMateria = async (
     } else {
       console.error("Erro desconhecido:", (err as Error).message);
     }
-    throw err;
+    throw new Error("Failed to create materia");
   }
 };
 
