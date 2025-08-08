@@ -11,39 +11,63 @@ router = APIRouter()
 class CreateMateria(BaseModel):
     name: Optional[str]
     teacher: Optional[str]
-    folder_id: Optional[str]
     semester: Optional[int]
     media: Optional[float]
 
 
-
-@router.post("/")
+@router.post("/{folder_id}")
 def create_materia(
+        folder_id: str,
         request: CreateMateria,
         authorization: str = Header(...),
 ):
     headers = {
         "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {authorization}",
+        "Authorization": authorization,
     }
 
     data = {
         "name": request.name,
         "teacher": request.teacher,
-        "folder_id": request.folder_id,
         "semester": request.semester,
         "media": request.media,
+        "folder_id": folder_id
     }
 
     try:
         response = requests.post(f"{SUPABASE_URL}/rest/v1/materia", headers=headers, json=data)
+        print("teste")
         return {
             "message": "Materia Criada com Sucesso",
             "status_code": response.status_code,
         }
     except Exception as e:
+        print("teste2")
         return {
             "message": "Erro ao criar materia",
+            "status_code": 500,
+            "error": str(e),
+        }
+
+@router.get("/")
+def read_all_materias(authorization: str = Header(...)):
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": authorization,
+    }
+    params = {
+        "select": "content"
+    }
+    try:
+        response = requests.get(f"{SUPABASE_URL}/rest/v1/materia", headers=headers, params=params)
+        return {
+            "message": "Materia Obtida com Sucesso",
+            "status_code": response.status_code,
+            "data": response.json()
+        }
+    except Exception as e:
+        return {
+            "message": "Erro ao receber materia",
             "status_code": 500,
             "error": str(e),
         }

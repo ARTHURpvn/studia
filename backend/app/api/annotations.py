@@ -61,17 +61,16 @@ def read_annotations(
     }
 
     params = {
-        "select": "content"
-    }
-
-    data = {
+        "select": "content",
         "parent_id": f"eq.{folder_id}",
     }
-    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Get Annotation  |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
 
+
+    print("-=-=-=-=-=-=-=-=-=-=-=-=-| Get Annotation  |-=-=-=-=-=-=-=-=-=-=-=-=-\n")
+    print(folder_id)
 
     try:
-        response = requests.get(f"{SUPABASE_URL}/rest/v1/annotations", headers=header, params=params, json=data)
+        response = requests.get(f"{SUPABASE_URL}/rest/v1/annotations", headers=header, params=params)
         data = response.json()
         print(data[0]["content"])
         print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n")
