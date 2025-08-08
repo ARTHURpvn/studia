@@ -1,13 +1,13 @@
 .tiptap.ProseMirror {
 
 
-  --tt-collaboration-carets-label: var(--tt-gray-dark-100);
-  --link-text-color: var(--tt-brand-color-400);
+  --tt-collaboration-carets-label: var(--tt-gray-dark-900);
+  --link-text-color: #533723;
   --thread-text: var(--tt-gray-dark-900);
-  --placeholder-color: var(--tt-gray-dark-a-400);
+  --placeholder-color: white;
   --thread-bg-color: var(--tt-color-yellow-dec-2);
 
-  --tiptap-ai-insertion-color: var(--tt-brand-color-400);
+  --tiptap-ai-insertion-color: #533723;
 }
 
 /* Ensure each top-level node has relative positioning 
@@ -23,6 +23,7 @@
   white-space: pre-wrap;
   outline: none;
   caret-color: var(--tt-cursor-color);
+  color: #cdcdcd;
 
   // Paragraph spacing
   p:not(:first-child) {
@@ -35,23 +36,23 @@
   // Selection styles
   &:not(.readonly):not(.ProseMirror-hideselection) {
     ::selection {
-      background-color: var(--tt-selection-color);
+      background-color: rgba(73, 73, 73, 0.47);
     }
 
     .selection::selection {
-      background: transparent;
+      background: rgba(73, 73, 73, 0.47);
     }
   }
 
   .selection {
     display: inline;
-    background-color: var(--tt-selection-color);
+    background-color: rgba(73, 73, 73, 0.47);
   }
 
   // Selected node styles
   .ProseMirror-selectednode:not(img):not(pre):not(.react-renderer) {
     border-radius: var(--tt-radius-md);
-    background-color: var(--tt-selection-color);
+    background-color: rgba(73, 73, 73, 0.47);
   }
 
   .ProseMirror-hideselection {
@@ -60,7 +61,6 @@
 
   // Resize cursor
   &.resize-cursor {
-    cursor: ew-resize;
     cursor: col-resize;
   }
 }
